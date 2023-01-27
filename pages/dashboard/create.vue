@@ -206,7 +206,13 @@
                 </div>
                 <button
                   v-if="numb < 8"
-                  @click="numb++"
+                  @click="
+                    () => {
+                      if (numb < 8) {
+                        numb++;
+                      }
+                    }
+                  "
                   type="button"
                   class="w-full bg-sky-500 hover:bg-sky-700 px-5 py-2.5 text-sm leading-5 rounded-md font-semibold text-white"
                 >
@@ -286,6 +292,12 @@
                 msg="ชื่อบริษัทและที่อยู่ที่ระบุในใบเสร็จรับเงิน / Company name and address for Receipt"
               >
                 <div class="flex flex-wrap gap-y-3">
+                  <div
+                    v-show="error7"
+                    class="w-full bg-red-300 p-4 border-l-8 border-red-600"
+                  >
+                    กรุณาระบุข้อมูล
+                  </div>
                   <AddressSelect
                     v-if="addressList.length"
                     v-model:addressList="addressList"
@@ -302,7 +314,13 @@
                       class="w-full lg:w-12/12 px-4"
                       msg="ชื่อบริษัท/Company name "
                       name="text"
-                      v-model="report.company_info_receipt.company_name"
+                      v-model="report.company_info_receipt.name_th"
+                    />
+                    <TextInput
+                      class="w-full lg:w-12/12 px-4"
+                      msg="ชื่อบริษัท(ภาษาอังกฤษ)"
+                      name="text"
+                      v-model="report.company_info_receipt.name_en"
                     />
                     <TextInput
                       class="w-full lg:w-6/12 px-4"
@@ -320,13 +338,13 @@
                       class="w-full lg:w-12/12 px-4"
                       msg="ที่อยู่/Address"
                       name="text"
-                      v-model="report.company_info_receipt.address"
+                      v-model="report.company_info_receipt.address_th"
                     />
 
                     <SubDistrictAuto
                       class="w-full lg:w-6/12 px-4"
                       msg="จังหวัด/PROVINCE"
-                      url="/api/province/search"
+                      url="/api/v1/province/search"
                       v-model="report.company_info_receipt.province"
                       v-model:sub-district="
                         report.company_info_receipt.sub_district
@@ -334,14 +352,20 @@
                       v-model:zipcode="report.company_info_receipt.zip_code"
                       v-model:district="report.company_info_receipt.district"
                       v-model:province="report.company_info_receipt.province"
+                      v-model:subDistrictStr="
+                        report.company_info_receipt.sub_district_str
+                      "
                     ></SubDistrictAuto>
                     <SubDistrictAuto
                       class="w-full lg:w-6/12 px-4"
                       msg="อำเภอ/เขต/District"
-                      url="/api/district/search"
+                      url="/api/v1/district/search"
                       v-model="report.company_info_receipt.district"
                       v-model:sub-district="
                         report.company_info_receipt.sub_district
+                      "
+                      v-model:subDistrictStr="
+                        report.company_info_receipt.sub_district_str
                       "
                       v-model:zipcode="report.company_info_receipt.zip_code"
                       v-model:district="report.company_info_receipt.district"
@@ -351,8 +375,11 @@
                     <SubDistrictAuto
                       class="w-full lg:w-6/12 px-4"
                       msg="ตำบล/แขวง/Sub-district"
-                      url="/api/search"
-                      v-model="report.company_info_receipt.sub_district"
+                      url="/api/v1/sub_district"
+                      v-model="report.company_info_receipt.sub_district_str"
+                      v-model:subDistrictStr="
+                        report.company_info_receipt.sub_district_str
+                      "
                       v-model:sub-district="
                         report.company_info_receipt.sub_district
                       "
@@ -363,8 +390,11 @@
                     <SubDistrictAuto
                       class="w-full lg:w-6/12 px-4"
                       msg="รหัสไปรษณีย์/ZIP Code"
-                      url="/api/zip_code/search"
+                      url="/api/v1/zip_code/search"
                       v-model="report.company_info_receipt.zip_code"
+                      v-model:subDistrictStr="
+                        report.company_info_receipt.sub_district_str
+                      "
                       v-model:sub-district="
                         report.company_info_receipt.sub_district
                       "
@@ -380,6 +410,12 @@
                 msg="ชื่อบริษัทและที่อยู่ระบุในใบรายงานผล / Company name and address for test report "
               >
                 <div class="flex flex-wrap gap-y-3">
+                  <div
+                    v-show="error8"
+                    class="w-full bg-red-300 p-4 border-l-8 border-red-600"
+                  >
+                    กรุณาระบุข้อมูล
+                  </div>
                   <AddressSelect
                     v-if="addressList.length"
                     v-model:addressList="addressList"
@@ -396,86 +432,105 @@
                       class="w-full lg:w-12/12 px-4"
                       msg="ชื่อบริษัท"
                       name="text"
-                      v-model="lang_th.company_name"
+                      v-model="report.company_info_test_report.name_th"
                     ></TextInput>
                     <TextInput
                       class="w-full lg:w-12/12 px-4"
                       msg="ที่อยู่"
                       name="text"
-                      v-model="lang_th.address"
+                      v-model="report.company_info_test_report.address_th"
                     ></TextInput>
                     <TextInput
                       class="w-full lg:w-12/12 px-4"
                       msg="ชื่อบริษัท(ภาษาอังกฤษ)"
                       name="text"
-                      v-model="lang_en.company_name"
+                      v-model="report.company_info_test_report.name_en"
                     ></TextInput>
                     <TextInput
                       class="w-full lg:w-12/12 px-4"
                       msg="ที่อยู่(ภาษาอังกฤษ)"
                       name="text"
-                      v-model="lang_en.address"
+                      v-model="report.company_info_test_report.address_en"
                     ></TextInput>
                     <SubDistrictAuto
                       class="w-full lg:w-6/12 px-4"
                       msg="จังหวัด/PROVINCE"
-                      url="/api/province/search"
-                      eng="true"
-                      v-model="lang_th.province"
-                      v-model:province="lang_th.province"
-                      v-model:zipcode="lang_th.zip_code"
-                      v-model:sub-district="lang_th.sub_district"
-                      v-model:district="lang_th.district"
-                      v-model:test="testData"
-                      v-model:subDistrictEn="lang_en.sub_district"
-                      v-model:districtEn="lang_en.district"
-                      v-model:provinceEn="lang_en.province"
+                      url="/api/v1/province/search"
+                      v-model="report.company_info_test_report.province"
+                      v-model:province="
+                        report.company_info_test_report.province
+                      "
+                      v-model:zipcode="report.company_info_test_report.zip_code"
+                      v-model:sub-district="
+                        report.company_info_test_report.sub_district
+                      "
+                      v-model:subDistrictStr="
+                        report.company_info_test_report.sub_district_str
+                      "
+                      v-model:district="
+                        report.company_info_test_report.district
+                      "
                     ></SubDistrictAuto>
                     <SubDistrictAuto
                       class="w-full lg:w-6/12 px-4"
                       msg="อำเภอ/เขต/District"
-                      url="/api/district/search"
+                      url="/api/v1/district/search"
                       eng="true"
-                      v-model="lang_th.district"
-                      v-model:province="lang_th.province"
-                      v-model:zipcode="lang_th.zip_code"
-                      v-model:sub-district="lang_th.sub_district"
-                      v-model:district="lang_th.district"
-                      v-model:test="testData"
-                      v-model:subDistrictEn="lang_en.sub_district"
-                      v-model:districtEn="lang_en.district"
-                      v-model:provinceEn="lang_en.province"
+                      v-model="report.company_info_test_report.district"
+                      v-model:subDistrictStr="
+                        report.company_info_test_report.sub_district_str
+                      "
+                      v-model:province="
+                        report.company_info_test_report.province
+                      "
+                      v-model:zipcode="report.company_info_test_report.zip_code"
+                      v-model:sub-district="
+                        report.company_info_test_report.sub_district
+                      "
+                      v-model:district="
+                        report.company_info_test_report.district
+                      "
                     >
                     </SubDistrictAuto>
                     <SubDistrictAuto
                       class="w-full lg:w-6/12 px-4"
                       msg="ตำบล/แขวง/Sub-district"
-                      url="/api/search"
+                      url="/api/v1/sub_district"
                       eng="true"
-                      v-model="lang_th.sub_district"
-                      v-model:province="lang_th.province"
-                      v-model:zipcode="lang_th.zip_code"
-                      v-model:sub-district="lang_th.sub_district"
-                      v-model:district="lang_th.district"
-                      v-model:test="testData"
-                      v-model:subDistrictEn="lang_en.sub_district"
-                      v-model:districtEn="lang_en.district"
-                      v-model:provinceEn="lang_en.province"
+                      v-model="report.company_info_test_report.sub_district_str"
+                      v-model:subDistrictStr="
+                        report.company_info_test_report.sub_district_str
+                      "
+                      v-model:province="
+                        report.company_info_test_report.province
+                      "
+                      v-model:zipcode="report.company_info_test_report.zip_code"
+                      v-model:sub-district="
+                        report.company_info_test_report.sub_district
+                      "
+                      v-model:district="
+                        report.company_info_test_report.district
+                      "
                     ></SubDistrictAuto>
                     <SubDistrictAuto
                       class="w-full lg:w-6/12 px-4"
                       msg="รหัสไปรษณีย์/ZIP Code"
-                      url="/api/zip_code/search"
+                      url="/api/v1/zip_code/search"
                       eng="true"
-                      v-model="lang_th.zip_code"
-                      v-model:province="lang_th.province"
-                      v-model:zipcode="lang_th.zip_code"
-                      v-model:sub-district="lang_th.sub_district"
-                      v-model:district="lang_th.district"
-                      v-model:test="testData"
-                      v-model:subDistrictEn="lang_en.sub_district"
-                      v-model:districtEn="lang_en.district"
-                      v-model:provinceEn="lang_en.province"
+                      v-model="report.company_info_test_report.zip_code"
+                      v-model:subDistrictStr="
+                        report.company_info_test_report.sub_district_str
+                      "
+                      v-model:province="
+                        report.company_info_test_report.province
+                      "
+                      v-model:zipcode="report.company_info_test_report.zip_code"
+                      v-model:sub-district="
+                        report.company_info_test_report.sub_district
+                      "
+                      v-model:district="
+                        report.company_info_test_report.district
+                      "
                     ></SubDistrictAuto>
                   </div>
                 </div>
@@ -525,7 +580,7 @@
                           >
                             ที่อยู่/Address </label
                           ><input
-                            v-model="report.other_address.address"
+                            v-model="report.other_address.address_th"
                             type="text"
                             class="border-0 px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                           />
@@ -534,43 +589,55 @@
                       <SubDistrictAuto
                         class="w-full lg:w-6/12 px-4"
                         msg="จังหวัด/PROVINCE"
-                        url="/api/province/search"
+                        url="/api/v1/province/search"
                         v-model="report.other_address.province"
                         v-model:zipcode="report.other_address.zip_code"
                         v-model:sub-district="report.other_address.sub_district"
                         v-model:district="report.other_address.district"
                         v-model:province="report.other_address.province"
+                        v-model:subDistrictStr="
+                          report.other_address.sub_district_str
+                        "
                       ></SubDistrictAuto>
                       <SubDistrictAuto
                         class="w-full lg:w-6/12 px-4"
                         msg="อำเภอ/เขต/District"
-                        url="/api/district/search"
+                        url="/api/v1/district/search"
                         v-model="report.other_address.district"
                         v-model:zipcode="report.other_address.zip_code"
                         v-model:sub-district="report.other_address.sub_district"
                         v-model:district="report.other_address.district"
                         v-model:province="report.other_address.province"
+                        v-model:subDistrictStr="
+                          report.other_address.sub_district_str
+                        "
                       >
                       </SubDistrictAuto>
                       <SubDistrictAuto
                         class="w-full lg:w-6/12 px-4"
                         msg="ตำบล/แขวง/Sub-district"
-                        url="/api/search"
-                        v-model="report.other_address.sub_district"
+                        url="/api/v1/sub_district"
+                        v-model="report.other_address.sub_district_str"
                         v-model:zipcode="report.other_address.zip_code"
                         v-model:sub-district="report.other_address.sub_district"
                         v-model:district="report.other_address.district"
                         v-model:province="report.other_address.province"
+                        v-model:subDistrictStr="
+                          report.other_address.sub_district_str
+                        "
                       ></SubDistrictAuto>
                       <SubDistrictAuto
                         class="w-full lg:w-6/12 px-4"
                         msg="รหัสไปรษณีย์/ZIP Code"
-                        url="/api/zip_code/search"
+                        url="/api/v1/zip_code/search"
                         v-model="report.other_address.zip_code"
                         v-model:zipcode="report.other_address.zip_code"
                         v-model:sub-district="report.other_address.sub_district"
                         v-model:district="report.other_address.district"
                         v-model:province="report.other_address.province"
+                        v-model:subDistrictStr="
+                          report.other_address.sub_district_str
+                        "
                       ></SubDistrictAuto>
                     </div>
                   </div>
@@ -769,6 +836,8 @@ const error3 = ref(false);
 const error4 = ref(false);
 const error5 = ref(false);
 const error6 = ref(false);
+const error7 = ref(false);
+const error8 = ref(false);
 const lang_th = reactive({
   language: "TH",
   company_name: "",
@@ -803,7 +872,7 @@ const addressList = ref([]);
 
 const addressSelect = ref();
 const addressSelectReport = ref();
-const testData = ref([]);
+
 onBeforeMount(async () => {
   try {
     const data = await apiFetch("/auth/users/me/", {
@@ -811,6 +880,8 @@ onBeforeMount(async () => {
     });
 
     if (data) {
+      console.log(data);
+
       report.company_info_person.first_name = data.first_name;
       report.company_info_person.last_name = data.last_name;
       report.company_info_person.position = data.position;
@@ -818,17 +889,8 @@ onBeforeMount(async () => {
       report.company_info_person.line_id = data.line_id;
       report.company_info_person.telephone = data.telephone;
       report.company_info_person.mobile = data.mobile;
-
-      report.company_info_receipt.company_name = data.company_name;
-      report.company_info_receipt.tax_id = data.tax_id;
-      report.company_info_receipt.branch_no = data.branch_no;
-      report.company_info_receipt.address = data.company_address;
-      report.company_info_receipt.province = data.company_province;
-      report.company_info_receipt.district = data.company_district;
-      report.company_info_receipt.sub_district = data.company_sub_district;
-      report.company_info_receipt.zip_code = data.company_zip_code;
     }
-    const response = await apiFetch("/api/address/list_create", {
+    const response = await apiFetch("/api/v1/address/list_create", {
       credentials: "include",
     });
     if (response.results.length) {
@@ -871,7 +933,15 @@ async function submit() {
   error4.value = false;
   error5.value = false;
   error6.value = false;
+  error7.value = false;
+  error8.value = false;
+  if (!otherAddressCheck.value) {
+    report.company_info_receipt = { ...addressSelect.value };
+  }
 
+  if (!otherAddressReportCheck.value) {
+    report.company_info_test_report = { ...addressSelectReport.value };
+  }
   if (
     !report.is_research &&
     !report.is_domestic_consume &&
@@ -899,6 +969,22 @@ async function submit() {
     window.scrollTo(0, 0);
     return;
   }
+  let check = false;
+  samples.value.forEach((element) => {
+    if (!element.sample_code_name) {
+      check = true;
+    }
+  });
+  if (check) {
+    $showToast("Fail", "error", 2000);
+
+    error2.value = true;
+
+    show1.value = true;
+    show2.value = false;
+    window.scrollTo(0, 0);
+    return;
+  }
   if (!report.delivery_means) {
     $showToast("Fail", "error", 2000);
 
@@ -906,6 +992,40 @@ async function submit() {
 
     show1.value = true;
     show2.value = false;
+    window.scrollTo(0, 0);
+    return;
+  }
+  if (
+    !report.company_info_receipt.address_th ||
+    !report.company_info_receipt.branch_no ||
+    !report.company_info_receipt.name_en ||
+    !report.company_info_receipt.name_th ||
+    !report.company_info_receipt.sub_district ||
+    !report.company_info_receipt.tax_id
+  ) {
+    $showToast("Fail", "error", 2000);
+
+    error7.value = true;
+
+    show1.value = false;
+    show2.value = true;
+    window.scrollTo(0, 0);
+    return;
+  }
+  if (
+    !report.company_info_test_report.address_en ||
+    !report.company_info_test_report.address_th ||
+    !report.company_info_test_report.branch_no ||
+    !report.company_info_test_report.name_en ||
+    !report.company_info_test_report.name_th ||
+    !report.company_info_test_report.sub_district
+  ) {
+    $showToast("Fail", "error", 2000);
+
+    error8.value = true;
+
+    show1.value = false;
+    show2.value = true;
     window.scrollTo(0, 0);
     return;
   }
@@ -919,7 +1039,22 @@ async function submit() {
     window.scrollTo(0, 0);
     return;
   }
+  if (report.by_post == "OT") {
+    console.log(report.other_address);
+    if (
+      !report.other_address.address_th ||
+      !report.other_address.sub_district
+    ) {
+      $showToast("Fail", "error", 2000);
 
+      error4.value = true;
+
+      show1.value = false;
+      show2.value = true;
+      window.scrollTo(0, 0);
+      return;
+    }
+  }
   if (
     !report.company_info_person.first_name ||
     !report.company_info_person.last_name ||
@@ -955,47 +1090,10 @@ async function submit() {
     test_item,
   }));
 
-  if (!otherAddressCheck.value) {
-    report.company_info_receipt.company_name = addressSelect.value.name;
-    report.company_info_receipt.tax_id = addressSelect.value.tax_id;
-    report.company_info_receipt.branch_no = addressSelect.value.branch_no;
-    report.company_info_receipt.address = addressSelect.value.address;
-    report.company_info_receipt.province = addressSelect.value.province;
-    report.company_info_receipt.district = addressSelect.value.district;
-    report.company_info_receipt.sub_district = addressSelect.value.sub_district;
-    report.company_info_receipt.zip_code = addressSelect.value.zip_code;
-  }
-
-  if (!otherAddressReportCheck.value) {
-    report.company_info_test_report.push({
-      language: "TH",
-      company_name: addressSelectReport.value.name,
-      address: addressSelectReport.value.address,
-      province: addressSelectReport.value.province,
-      district: addressSelectReport.value.district,
-      sub_district: addressSelectReport.value.sub_district,
-      zip_code: addressSelectReport.value.zip_code,
-    });
-    report.company_info_test_report.push({
-      language: "EN",
-      company_name: addressSelectReport.value.name_en,
-      address: addressSelectReport.value.address_en,
-      province: addressSelectReport.value.province_en,
-      district: addressSelectReport.value.district_en,
-      sub_district: addressSelectReport.value.sub_district_en,
-      zip_code: addressSelectReport.value.zip_code,
-    });
-  } else {
-    lang_en.zip_code = lang_th.zip_code;
-    report.company_info_test_report.push(lang_th);
-
-    report.company_info_test_report.push(lang_en);
-  }
-
   try {
     show.value = true;
 
-    const response = await apiFetch("/api/dna/list_create/", {
+    const response = await apiFetch("/api/v1/dna/list_create/", {
       headers: {
         "Content-Type": "application/json",
       },
@@ -1010,7 +1108,6 @@ async function submit() {
       await navigateTo(`/dashboard/report/confirm/${response.id}`);
     }
   } catch (error) {
-    report.company_info_test_report = [];
     $showToast("Fail", "error", 2000);
   } finally {
     show.value = false;
@@ -1019,19 +1116,14 @@ async function submit() {
 
 function removeSample(sample) {
   samples.value = samples.value.filter((t) => t !== sample);
-  console.log(samples.value);
 
   numb.value = samples.value.length;
 }
 
-function reduceNum() {
-  numb.value--;
-}
 function toggleButton() {
   show1.value = show1.value ? false : true;
   show2.value = show2.value ? false : true;
 
   window.scrollTo(0, 0);
 }
-function catchErrorFileds() {}
 </script>

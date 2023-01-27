@@ -8,6 +8,8 @@ const closeModal = () => {
   toggleSigup();
 };
 onClickOutside(target, closeModal);
+const typeInput1 = ref("password");
+const typeInput2 = ref("password");
 const firstName = ref();
 const lastName = ref();
 const username = ref();
@@ -113,10 +115,10 @@ function clearErrorFiled(filed) {
           -->
         <div
           ref="target"
-          class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg"
+          class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg p-5"
         >
           <form @submit.prevent="onSubmit">
-            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+            <div class="bg-white px-9 pt-5 pb-4 sm:p-6 sm:pb-4">
               <h2 class="text-2xl font-bold">Let's Get You Signed Up</h2>
               <div class="mt-8">
                 <div class="grid grid-cols-2 gap-6">
@@ -188,7 +190,7 @@ function clearErrorFiled(filed) {
                       placeholder="john@example.com"
                     />
                   </label>
-                  <label class="block col-span-2">
+                  <label class="block col-span-2 relative mr-7">
                     <span class="text-gray-700"
                       >Password
                       <span v-if="passwordError" class="text-pink-600">{{
@@ -201,11 +203,21 @@ function clearErrorFiled(filed) {
                       }"
                       @input="passwordError = ''"
                       v-model="password"
-                      type="password"
+                      :type="typeInput1"
                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                     />
+                    <div
+                      @click="
+                        typeInput1 === 'password'
+                          ? (typeInput1 = 'text')
+                          : (typeInput1 = 'password')
+                      "
+                      class="-right-[41px] top-[28px] cursor-pointer rounded-r-md absolute border-2 text-lg w-[42px] h-[42px] text-center border-gray-300 shadow-sm"
+                    >
+                      <Icon name="ic:outline-remove-red-eye" />
+                    </div>
                   </label>
-                  <label class="block col-span-2">
+                  <label class="block col-span-2 relative mr-7">
                     <span class="text-gray-700"
                       >Confirm password
                       <span v-if="rePasswordError" class="text-pink-600">{{
@@ -218,9 +230,19 @@ function clearErrorFiled(filed) {
                       }"
                       @input="rePasswordError = ''"
                       v-model="rePassword"
-                      type="password"
+                      :type="typeInput2"
                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                     />
+                    <div
+                      @click="
+                        typeInput2 === 'password'
+                          ? (typeInput2 = 'text')
+                          : (typeInput2 = 'password')
+                      "
+                      class="-right-[41px] top-[28px] cursor-pointer rounded-r-md absolute border-2 text-lg w-[42px] h-[42px] text-center border-gray-300 shadow-sm"
+                    >
+                      <Icon name="ic:outline-remove-red-eye" />
+                    </div>
                   </label>
                   <div class="p-4 col-span-2">
                     <div class="flex flex-col items-center shrink-0">

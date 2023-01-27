@@ -111,7 +111,7 @@
     <footer class="text-center lg:text-left bg-[#ebddc3] text-gray-600">
       <div class="mx-6 py-10 text-center md:text-left">
         <div class="grid grid-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <div class="col-start-2 col-end-4">
+          <div class="col-end-4">
             <h6
               class="uppercase font-semibold mb-4 flex justify-center md:justify-start"
             >

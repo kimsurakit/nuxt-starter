@@ -9,7 +9,7 @@
       :key="item.id"
       :value="item.id"
     >
-      {{ `${item.name} (${item.name_en})` }}
+      {{ `${item.name_th} (${item.name_en})` }}
     </option>
   </select>
   <!--  -->
@@ -34,7 +34,7 @@
           }"
           class="mb-1 mr-auto text-xl font-semibold text-gray-600"
         >
-          {{ props.addressSelect.name }} ({{ props.addressSelect.name_en }})
+          {{ props.addressSelect.name_th }} ({{ props.addressSelect.name_en }})
         </h2>
         <div class="flex flex-wrap flex-col items-start justify-center">
           <p
@@ -43,15 +43,7 @@
             }"
             class="mb-2 text-base text-gray-700"
           >
-            {{
-              [
-                props.addressSelect.address,
-                props.addressSelect.province,
-                props.addressSelect.district,
-                props.addressSelect.sub_district,
-                props.addressSelect.zip_code,
-              ].join(",")
-            }}
+            {{ props.addressSelect.full_address_th }}
           </p>
           <div class="mb-2 flex items-end">
             <p

@@ -8,7 +8,7 @@ const apiFetch = useBaseFetch();
 const statusCode = ref();
 onMounted(async () => {
   try {
-    const data = await apiFetch(`/api/dna/${route.params.id}`, {
+    const data = await apiFetch(`/api/v1/dna/${route.params.id}`, {
       credentials: "include",
     });
     console.log(data);

@@ -17,7 +17,7 @@ const companyTarget = ref("");
 const show = ref(false);
 onMounted(async () => {
   try {
-    const data = await apiFetch("/api/address/list_create", {
+    const data = await apiFetch("/api/v1/address/list_create", {
       credentials: "include",
     });
     if (data.results) {
@@ -33,7 +33,7 @@ function onDelete(item) {
 }
 async function submit() {
   try {
-    await apiFetch(`/api/address/delete/${companyTarget.value.id}/`, {
+    await apiFetch(`/api/v1/address/delete/${companyTarget.value.id}/`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -44,7 +44,7 @@ async function submit() {
     $showToast("Success", "success", 2000);
 
     companyTarget.value = "";
-    const data = await apiFetch("/api/address/list_create", {
+    const data = await apiFetch("/api/v1/address/list_create", {
       credentials: "include",
     });
     if (data.results) {
@@ -169,7 +169,7 @@ async function submit() {
             >
               <div class="flex items-center justify-end">
                 <h2 class="mb-4 mr-auto text-xl font-semibold text-gray-600">
-                  {{ item.name }} ({{ item.name_en }})
+                  {{ item.name_th }} ({{ item.name_en }})
                 </h2>
                 <NuxtLink :to="`/dashboard/company/update/${item.id}`">
                   <Icon
@@ -188,15 +188,7 @@ async function submit() {
                 class="flex flex-wrap flex-col items-start justify-center mb-4"
               >
                 <p class="mb-4 text-base text-gray-700">
-                  {{
-                    [
-                      item.address,
-                      item.province,
-                      item.district,
-                      item.sub_district,
-                      item.zip_code,
-                    ].join(",")
-                  }}
+                  {{ item.full_address_th }}
                 </p>
                 <div class="mb-4 flex items-end">
                   <p class="text-sm text-gray-400">

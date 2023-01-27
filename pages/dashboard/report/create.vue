@@ -172,14 +172,14 @@
                     <AutoComplete
                       class="w-full lg:w-6/12 px-4"
                       msg="จังหวัด/PROVINCE"
-                      url="/api/province"
+                      url="/api/v1/province"
                       v-model="report.company_info_receipt.province"
                     ></AutoComplete>
 
                     <DistricAuto
                       class="w-full lg:w-6/12 px-4"
                       msg="อำเภอ/เขต/District"
-                      url="/api/district"
+                      url="/api/v1/district"
                       v-model="report.company_info_receipt.district"
                       v-model:province="report.company_info_receipt.province"
                       v-model:sub-district="
@@ -191,7 +191,7 @@
                     <SubDistrictAuto
                       class="w-full lg:w-6/12 px-4"
                       msg="ตำบล/แขวง/Sub-district"
-                      url="/api/sub-district"
+                      url="/api/v1/sub-district"
                       v-model="report.company_info_receipt.sub_district"
                       v-model:zipcode="report.company_info_receipt.zip_code"
                       v-model:district="report.company_info_receipt.district"
@@ -200,7 +200,7 @@
                     <ZipCodeAuto
                       class="w-full lg:w-6/12 px-4"
                       msg="รหัสไปรษณีย์/ZIP Code"
-                      url="/api/sub-district"
+                      url="/api/v1/sub-district"
                       keyfiled="zip_code"
                       v-model="report.company_info_receipt.zip_code"
                       v-model:sub-district="
@@ -564,7 +564,7 @@ onMounted(async () => {
       report.company_info_receipt.sub_district = data.company_sub_district;
       report.company_info_receipt.zip_code = data.company_zip_code;
     }
-    const response = await apiFetch("/api/address/list_create", {
+    const response = await apiFetch("/api/v1/address/list_create", {
       credentials: "include",
     });
     if (response.length) {
@@ -663,7 +663,7 @@ async function submit() {
   try {
     show.value = true;
 
-    const response = await apiFetch("/api/dna/list_create/", {
+    const response = await apiFetch("/api/v1/dna/list_create/", {
       headers: {
         "Content-Type": "application/json",
       },

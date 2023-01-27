@@ -5,19 +5,18 @@ definePageMeta({
 const show1 = ref(false);
 const show2 = ref(false);
 const address = ref({
-  name: "",
+  name_th: "",
   name_en: "",
   tax_id: "",
   branch_no: "",
-  address: "",
+  address_th: "",
+  sub_district: "",
+  sub_district_str: "",
   province: "",
   district: "",
-  sub_district: "",
-  address_en: "",
-  province_en: "",
-  district_en: "",
-  sub_district_en: "",
   zip_code: "",
+
+  address_en: "",
 });
 
 const firstName = ref("");
@@ -25,26 +24,19 @@ const lastName = ref("");
 const firstNameEn = ref("");
 const lastNameEn = ref("");
 const individual = ref({
-  name: "",
+  name_th: "",
   name_en: "",
   tax_id: "",
   branch_no: "",
   address: "",
-  province: "",
-  district: "",
   sub_district: "",
-  address_en: "",
-  province_en: "",
-  district_en: "",
-  sub_district_en: "",
-  zip_code: "",
 });
 const show = ref(false);
 const apiFetch = useBaseFetch();
 const { $showToast } = useNuxtApp();
 async function submit() {
   try {
-    const response = await apiFetch("/api/address/list_create/", {
+    const response = await apiFetch("/api/v1/address/list_create/", {
       headers: {
         "Content-Type": "application/json",
       },
@@ -62,11 +54,11 @@ async function submit() {
   }
 }
 async function submitIndividual() {
-  individual.value.name = `${firstName.value} ${lastName.value}`;
+  individual.value.name_th = `${firstName.value} ${lastName.value}`;
   individual.value.name_en = `${firstNameEn.value} ${lastNameEn.value}`;
   console.log(individual.value);
   try {
-    const response = await apiFetch("/api/address/list_create/", {
+    const response = await apiFetch("/api/v1/address/list_create/", {
       headers: {
         "Content-Type": "application/json",
       },
@@ -151,59 +143,47 @@ async function submitIndividual() {
                 <SubDistrictAuto
                   class="w-full lg:w-6/12 px-4"
                   msg="จังหวัด/PROVINCE"
-                  url="/api/province/search"
-                  eng="true"
+                  url="/api/v1/province/search"
                   v-model="individual.province"
                   v-model:zipcode="individual.zip_code"
                   v-model:sub-district="individual.sub_district"
                   v-model:district="individual.district"
                   v-model:province="individual.province"
-                  v-model:district-en="individual.district_en"
-                  v-model:province-en="individual.province_en"
-                  v-model:sub-district-en="individual.sub_district_en"
+                  v-model:subDistrictStr="individual.subDistrictStr"
                 ></SubDistrictAuto>
                 <SubDistrictAuto
                   class="w-full lg:w-6/12 px-4"
                   msg="อำเภอ/เขต/District"
-                  url="/api/district/search"
-                  eng="true"
+                  url="/api/v1/district/search"
                   v-model="individual.district"
                   v-model:zipcode="individual.zip_code"
                   v-model:sub-district="individual.sub_district"
                   v-model:district="individual.district"
                   v-model:province="individual.province"
-                  v-model:district-en="individual.district_en"
-                  v-model:province-en="individual.province_en"
-                  v-model:sub-district-en="individual.sub_district_en"
+                  v-model:subDistrictStr="individual.subDistrictStr"
                 >
                 </SubDistrictAuto>
                 <SubDistrictAuto
                   class="w-full lg:w-6/12 px-4"
                   msg="ตำบล/แขวง/Sub-district"
-                  url="/api/search"
-                  eng="true"
-                  v-model="individual.sub_district"
+                  url="/api/v1/sub_district"
+                  v-model="individual.subDistrictStr"
                   v-model:zipcode="individual.zip_code"
                   v-model:sub-district="individual.sub_district"
                   v-model:district="individual.district"
                   v-model:province="individual.province"
-                  v-model:district-en="individual.district_en"
-                  v-model:province-en="individual.province_en"
-                  v-model:sub-district-en="individual.sub_district_en"
+                  v-model:subDistrictStr="individual.subDistrictStr"
                 ></SubDistrictAuto>
                 <SubDistrictAuto
                   class="w-full lg:w-6/12 px-4"
                   msg="รหัสไปรษณีย์/ZIP Code"
-                  url="/api/zip_code/search"
-                  eng="true"
+                  url="/api/v1/zip_code/search"
                   v-model="individual.zip_code"
                   v-model:zipcode="individual.zip_code"
                   v-model:sub-district="individual.sub_district"
                   v-model:district="individual.district"
                   v-model:province="individual.province"
-                  v-model:district-en="individual.district_en"
-                  v-model:province-en="individual.province_en"
-                  v-model:sub-district-en="individual.sub_district_en"
+                  v-model:subDistrictStr="individual.subDistrictStr"
                 ></SubDistrictAuto>
               </div>
             </Section>
@@ -253,13 +233,13 @@ async function submitIndividual() {
                   class="w-full lg:w-12/12 px-4"
                   msg="ชื่อบริษัท (ภาษาไทย) "
                   name="text"
-                  v-model="address.name"
+                  v-model="address.name_th"
                 ></TextInput>
                 <TextInput
                   class="w-full lg:w-12/12 px-4"
                   msg="ที่อยู่ (ภาษาไทย)/Address"
                   name="text"
-                  v-model="address.address"
+                  v-model="address.address_th"
                 ></TextInput>
                 <TextInput
                   class="w-full lg:w-12/12 px-4"
@@ -288,63 +268,47 @@ async function submitIndividual() {
                 <SubDistrictAuto
                   class="w-full lg:w-6/12 px-4"
                   msg="จังหวัด/PROVINCE"
-                  url="/api/province/search"
-                  eng="true"
+                  url="/api/v1/province/search"
                   v-model="address.province"
                   v-model:province="address.province"
                   v-model:zipcode="address.zip_code"
                   v-model:sub-district="address.sub_district"
                   v-model:district="address.district"
-                  v-model:test="testData"
-                  v-model:district-en="address.district_en"
-                  v-model:province-en="address.province_en"
-                  v-model:sub-district-en="address.sub_district_en"
+                  v-model:subDistrictStr="address.subDistrictStr"
                 ></SubDistrictAuto>
                 <SubDistrictAuto
                   class="w-full lg:w-6/12 px-4"
                   msg="อำเภอ/เขต/District"
-                  url="/api/district/search"
-                  eng="true"
+                  url="/api/v1/district/search"
                   v-model="address.district"
                   v-model:province="address.province"
                   v-model:zipcode="address.zip_code"
                   v-model:sub-district="address.sub_district"
                   v-model:district="address.district"
-                  v-model:test="testData"
-                  v-model:district-en="address.district_en"
-                  v-model:province-en="address.province_en"
-                  v-model:sub-district-en="address.sub_district_en"
+                  v-model:subDistrictStr="address.subDistrictStr"
                 >
                 </SubDistrictAuto>
                 <SubDistrictAuto
                   class="w-full lg:w-6/12 px-4"
                   msg="ตำบล/แขวง/Sub-district"
-                  url="/api/search"
-                  eng="true"
-                  v-model="address.sub_district"
+                  url="/api/v1/sub_district"
+                  v-model="address.subDistrictStr"
                   v-model:province="address.province"
                   v-model:zipcode="address.zip_code"
+                  v-model:subDistrictStr="address.subDistrictStr"
                   v-model:sub-district="address.sub_district"
                   v-model:district="address.district"
-                  v-model:test="testData"
-                  v-model:district-en="address.district_en"
-                  v-model:province-en="address.province_en"
-                  v-model:sub-district-en="address.sub_district_en"
                 ></SubDistrictAuto>
                 <SubDistrictAuto
                   class="w-full lg:w-6/12 px-4"
                   msg="รหัสไปรษณีย์/ZIP Code"
-                  url="/api/zip_code/search"
-                  eng="true"
+                  url="/api/v1/zip_code/search"
                   v-model="address.zip_code"
                   v-model:province="address.province"
                   v-model:zipcode="address.zip_code"
                   v-model:sub-district="address.sub_district"
                   v-model:district="address.district"
-                  v-model:test="testData"
-                  v-model:district-en="address.district_en"
-                  v-model:province-en="address.province_en"
-                  v-model:sub-district-en="address.sub_district_en"
+                  v-model:subDistrictStr="address.subDistrictStr"
                 ></SubDistrictAuto>
               </div>
             </Section>

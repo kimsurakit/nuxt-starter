@@ -2,8 +2,9 @@
 const testModal = ref(null);
 const username = ref(null);
 const password = ref(null);
+const typeInput = ref("password");
 const usernameError = ref("");
-const passwordError = ref("");
+
 const { showModal } = storeToRefs(useShowModalStore());
 const { isAuth } = storeToRefs(useAuthUser());
 const { $showToast } = useNuxtApp();
@@ -79,7 +80,7 @@ async function submit() {
           ref="testModal"
           class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg"
         >
-          <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+          <div class="bg-white px-8 pt-5 pb-4 sm:p-6 sm:pb-4">
             <h2 class="text-2xl font-bold">Sign in to your account</h2>
             <div class="mt-8">
               <div class="grid grid-cols-1 gap-6">
@@ -105,13 +106,24 @@ async function submit() {
                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                   />
                 </label>
-                <label class="block">
+                <label class="block relative mr-7">
                   <span class="text-gray-700">Password</span>
                   <input
                     v-model="password"
-                    type="password"
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                    :type="typeInput"
+                    class="mt-1 block w-full rounded-l-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                   />
+
+                  <div
+                    @click="
+                      typeInput === 'password'
+                        ? (typeInput = 'text')
+                        : (typeInput = 'password')
+                    "
+                    class="-right-[41px] top-[28px] cursor-pointer rounded-r-md absolute border-2 text-lg w-[42px] h-[42px] text-center border-gray-300 shadow-sm"
+                  >
+                    <Icon name="ic:outline-remove-red-eye" />
+                  </div>
                 </label>
                 <!-- <label class="block">
                   <span class="text-gray-700">When is your event?</span>

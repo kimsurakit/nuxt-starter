@@ -3,15 +3,40 @@ definePageMeta({
   layout: "index",
 });
 const data = ref([]);
+const n = ref("");
+const prev = ref(false);
 const apiFetch = useBaseFetch();
 
 onMounted(async () => {
-  const response = await apiFetch("/api/dna/list_create/", {
+  const response = await apiFetch("/api/v1/dna/list_create/", {
     method: "GET",
     credentials: "include",
   });
+  n.value = response.next;
+  console.log(response);
+  prev.value = response.previous;
   data.value = response.results;
 });
+async function test() {
+  const response = await $fetch(n.value, {
+    method: "GET",
+    credentials: "include",
+  });
+  n.value = response.next;
+  console.log(response);
+  prev.value = response.previous;
+  data.value = response.results;
+}
+async function testPrev() {
+  const response = await $fetch(prev.value, {
+    method: "GET",
+    credentials: "include",
+  });
+  n.value = response.next;
+
+  prev.value = response.previous;
+  data.value = response.results;
+}
 </script>
 <template>
   <div class="flex flex-wrap">
@@ -139,6 +164,28 @@ onMounted(async () => {
                   </tr>
                 </tbody>
               </table>
+              <div
+                class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6"
+              >
+                <div class="flex flex-1 justify-between">
+                  <button
+                    @click="testPrev"
+                    :disabled="!prev"
+                    :class="[!prev ? 'hover:bg-withe' : 'hover:bg-gray-50']"
+                    class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700"
+                  >
+                    Previous
+                  </button>
+                  <button
+                    @click="test"
+                    :disabled="!n"
+                    :class="[!n ? 'hover:bg-withe' : 'hover:bg-gray-50']"
+                    class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -26,14 +26,17 @@ const { $showToast } = useNuxtApp();
 async function submit() {
   console.log(JSON.stringify(address.value));
   try {
-    const response = await apiFetch(`/api/address/update/${route.params.id}/`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "PUT",
-      credentials: "include",
-      body: JSON.stringify(address.value),
-    });
+    const response = await apiFetch(
+      `/api/v1/address/update/${route.params.id}/`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "PUT",
+        credentials: "include",
+        body: JSON.stringify(address.value),
+      }
+    );
     if (response) {
       $showToast("Success", "success", 2000);
     }
@@ -46,7 +49,7 @@ async function submit() {
 onMounted(async () => {
   console.log();
   try {
-    const data = await apiFetch(`/api/address/detail/${route.params.id}`, {
+    const data = await apiFetch(`/api/v1/address/detail/${route.params.id}`, {
       credentials: "include",
     });
 
@@ -109,14 +112,13 @@ onMounted(async () => {
                 <SubDistrictAuto
                   class="w-full lg:w-6/12 px-4"
                   msg="จังหวัด/PROVINCE"
-                  url="/api/province/search"
+                  url="/api/v1/province/search"
                   eng="true"
                   v-model="address.province"
                   v-model:province="address.province"
                   v-model:zipcode="address.zip_code"
                   v-model:sub-district="address.sub_district"
                   v-model:district="address.district"
-                  v-model:test="testData"
                   v-model:district-en="address.district_en"
                   v-model:province-en="address.province_en"
                   v-model:sub-district-en="address.sub_district_en"
@@ -124,14 +126,13 @@ onMounted(async () => {
                 <SubDistrictAuto
                   class="w-full lg:w-6/12 px-4"
                   msg="อำเภอ/เขต/District"
-                  url="/api/district/search"
+                  url="/api/v1/district/search"
                   eng="true"
                   v-model="address.district"
                   v-model:province="address.province"
                   v-model:zipcode="address.zip_code"
                   v-model:sub-district="address.sub_district"
                   v-model:district="address.district"
-                  v-model:test="testData"
                   v-model:district-en="address.district_en"
                   v-model:province-en="address.province_en"
                   v-model:sub-district-en="address.sub_district_en"
@@ -140,14 +141,13 @@ onMounted(async () => {
                 <SubDistrictAuto
                   class="w-full lg:w-6/12 px-4"
                   msg="ตำบล/แขวง/Sub-district"
-                  url="/api/search"
+                  url="/api/v1/sub_district"
                   eng="true"
                   v-model="address.sub_district"
                   v-model:province="address.province"
                   v-model:zipcode="address.zip_code"
                   v-model:sub-district="address.sub_district"
                   v-model:district="address.district"
-                  v-model:test="testData"
                   v-model:district-en="address.district_en"
                   v-model:province-en="address.province_en"
                   v-model:sub-district-en="address.sub_district_en"
@@ -155,14 +155,13 @@ onMounted(async () => {
                 <SubDistrictAuto
                   class="w-full lg:w-6/12 px-4"
                   msg="รหัสไปรษณีย์/ZIP Code"
-                  url="/api/zip_code/search"
+                  url="/api/v1/zip_code/search"
                   eng="true"
                   v-model="address.zip_code"
                   v-model:province="address.province"
                   v-model:zipcode="address.zip_code"
                   v-model:sub-district="address.sub_district"
                   v-model:district="address.district"
-                  v-model:test="testData"
                   v-model:district-en="address.district_en"
                   v-model:province-en="address.province_en"
                   v-model:sub-district-en="address.sub_district_en"

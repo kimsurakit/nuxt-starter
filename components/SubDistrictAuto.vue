@@ -41,6 +41,7 @@ const props = defineProps([
   "url",
   "keyfiled",
   "subDistrict",
+  "subDistrictStr",
   "district",
   "province",
   "eng",
@@ -55,15 +56,17 @@ const emit = defineEmits([
   "update:subDistrict",
   "update:district",
   "update:province",
-  "update:subDistrictEn",
+  "update:subDistrictStr",
   "update:districtEn",
   "update:provinceEn",
   "update:modelValue",
 ]);
+const { data } = storeToRefs(useSubDistrict());
+const { next } = storeToRefs(useSubDistrict());
 
-const data = ref([]);
+// const data = ref([]);
 const searchData = ref([]);
-const next = ref("");
+
 const nextData = ref("");
 const searchShow = ref(false);
 const closeModal = () => {
@@ -74,7 +77,7 @@ const debouncedFn = useDebounceFn(
   async () => {
     const params = new URLSearchParams();
     params.append("q", props.modelValue);
-    const response = await apiFetch(props.url + "?limit=100" + "&" + params, {
+    const response = await apiFetch(props.url + "?limit=200" + "&" + params, {
       credentials: "include",
     });
     if (response.results) {
@@ -109,11 +112,14 @@ const searchProvince = computed({
 
 async function init() {
   searchShow.value = true;
-
+  if (props.modelValue) {
+    debouncedFn();
+  }
   if (data.value.length) {
+    console.log(data.value.length);
     return;
   }
-  const response = await apiFetch("/api/sub_district?limit=100", {
+  const response = await apiFetch("/api/v1/sub_district?limit=200", {
     credentials: "include",
   });
   console.log(response.results);
@@ -125,15 +131,10 @@ const selectProvince = async (select) => {
   searchShow.value = false;
   emit("update:zipcode", select.zip_code);
 
-  emit("update:subDistrict", select.name_th);
+  emit("update:subDistrict", select.id);
+  emit("update:subDistrictStr", select.name_th);
   emit("update:district", select.district_info.name_th);
   emit("update:province", select.district_info.province_info.name_th);
-
-  if (props.eng) {
-    emit("update:subDistrictEn", select.name_en);
-    emit("update:districtEn", select.district_info.name_en);
-    emit("update:provinceEn", select.district_info.province_info.name_en);
-  }
 };
 onMounted(() => {
   target.value.addEventListener("scroll", handleScroll);
@@ -141,7 +142,7 @@ onMounted(() => {
 async function handleScroll(element) {
   if (
     element.target.scrollTop + element.target.offsetHeight >=
-    element.target.scrollHeight / 1.7
+    element.target.scrollHeight / 1.75
   ) {
     throttledFn();
   }
@@ -151,15 +152,17 @@ const throttledFn = useThrottleFn(() => {
     loadMoreData(nextData, searchData);
   }
   loadMoreData(next, data);
-}, 500);
+}, 1000);
 async function loadMoreData(n, d) {
   if (n.value) {
     // n.value = n.value.replace("http", "https");
     const response = await $fetch(n.value, {
       credentials: "include",
     });
-    d.value.push(...response.results);
-    n.value = response.next;
+    if (n.value !== response.next) {
+      d.value.push(...response.results);
+      n.value = response.next;
+    }
   }
 }
 </script>
