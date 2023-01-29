@@ -312,13 +312,13 @@
                   >
                     <TextInput
                       class="w-full lg:w-12/12 px-4"
-                      msg="ชื่อบริษัท/Company name "
+                      msg="ชื่อบริษัท (ภาษาไทย)"
                       name="text"
                       v-model="report.company_info_receipt.name_th"
                     />
                     <TextInput
                       class="w-full lg:w-12/12 px-4"
-                      msg="ชื่อบริษัท(ภาษาอังกฤษ)"
+                      msg="COMPANY NAME (ENGLISH)"
                       name="text"
                       v-model="report.company_info_receipt.name_en"
                     />
@@ -336,9 +336,15 @@
                     />
                     <TextInput
                       class="w-full lg:w-12/12 px-4"
-                      msg="ที่อยู่/Address"
+                      msg="ที่อยู่ (ภาษาไทย)/ADDRESS"
                       name="text"
                       v-model="report.company_info_receipt.address_th"
+                    />
+                    <TextInput
+                      class="w-full lg:w-12/12 px-4"
+                      msg="ADDRESS (ENGLISH)"
+                      name="text"
+                      v-model="report.company_info_receipt.address_en"
                     />
 
                     <SubDistrictAuto
@@ -428,27 +434,47 @@
                     v-show="otherAddressReportCheck"
                     class="w-full flex flex-wrap gap-y-3"
                   >
+                    <div class="w-full lg:w-12/12 px-4">
+                      <CheckBox
+                        v-model="checkComp"
+                        check="true"
+                        msg="ที่อยู่ตามใบเสร็จ"
+                      ></CheckBox>
+                    </div>
                     <TextInput
                       class="w-full lg:w-12/12 px-4"
-                      msg="ชื่อบริษัท"
+                      msg="ชื่อบริษัท (ภาษาไทย)"
                       name="text"
                       v-model="report.company_info_test_report.name_th"
                     ></TextInput>
+
                     <TextInput
                       class="w-full lg:w-12/12 px-4"
-                      msg="ที่อยู่"
+                      msg="COMPANY NAME (ENGLISH)"
+                      name="text"
+                      v-model="report.company_info_test_report.name_en"
+                    ></TextInput>
+                    <TextInput
+                      class="w-full lg:w-6/12 px-4"
+                      msg="เลขประจำตัวผู้เสียภาษี/Tax ID"
+                      name="text"
+                      v-model="report.company_info_test_report.tax_id"
+                    />
+                    <TextInput
+                      class="w-full lg:w-6/12 px-4"
+                      msg="สาขาที่/Branch No."
+                      name="text"
+                      v-model="report.company_info_test_report.branch_no"
+                    />
+                    <TextInput
+                      class="w-full lg:w-12/12 px-4"
+                      msg="ที่อยู่ (ภาษาไทย)/ADDRESS"
                       name="text"
                       v-model="report.company_info_test_report.address_th"
                     ></TextInput>
                     <TextInput
                       class="w-full lg:w-12/12 px-4"
-                      msg="ชื่อบริษัท(ภาษาอังกฤษ)"
-                      name="text"
-                      v-model="report.company_info_test_report.name_en"
-                    ></TextInput>
-                    <TextInput
-                      class="w-full lg:w-12/12 px-4"
-                      msg="ที่อยู่(ภาษาอังกฤษ)"
+                      msg="ADDRESS (ENGLISH)"
                       name="text"
                       v-model="report.company_info_test_report.address_en"
                     ></TextInput>
@@ -857,6 +883,7 @@ const lang_en = reactive({
   zip_code: "",
 });
 
+const checkComp = ref(false);
 const show = ref(false);
 const show1 = ref(true);
 const show2 = ref(false);
@@ -907,9 +934,21 @@ onBeforeMount(async () => {
   }
 });
 
+watch(checkComp, () => {
+  if (!checkComp.value) {
+    return;
+  }
+  if (!otherAddressCheck.value) {
+    report.company_info_test_report = { ...addressSelect.value };
+    return;
+  }
+  report.company_info_test_report = { ...report.company_info_receipt };
+});
+
 watch(numb, (newValue, oldValue) => {
   if (numb.value < 0 || !numb.value) {
     numb.value = 0;
+
     samples.value = [];
   } else if (oldValue < newValue) {
     for (let i = oldValue + 1; i <= newValue; i++) {

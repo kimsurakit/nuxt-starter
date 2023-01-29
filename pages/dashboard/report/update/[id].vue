@@ -829,7 +829,7 @@ definePageMeta({
 const route = useRoute();
 
 const othShow = ref(false);
-const numb = ref(1);
+const numb = ref(null);
 const samples = ref([]);
 const error1 = ref(false);
 const error2 = ref(false);
@@ -857,11 +857,19 @@ const report = reactive({
     tax_id: "",
     branch_no: "",
     sub_district: null,
+    sub_district_str: "",
+    district: "",
+    province: "",
+    zip_code: "",
   },
   other_address: {
     address_th: "",
     address_en: "",
     sub_district: null,
+    sub_district_str: "",
+    district: "",
+    province: "",
+    zip_code: "",
   },
   company_info_person: {
     first_name: "",
@@ -880,6 +888,10 @@ const report = reactive({
     tax_id: "",
     branch_no: "",
     sub_district: null,
+    sub_district_str: "",
+    district: "",
+    province: "",
+    zip_code: "",
   },
   is_general_info: false,
   is_research: false,
@@ -907,32 +919,54 @@ onBeforeMount(async () => {
     const data = await apiFetch(`/api/v1/dna/${route.params.id}`, {
       credentials: "include",
     });
-    // report.value = { ...data };
-    let keys1 = Object.keys(report);
-    let keys2 = Object.keys(data);
-    for (let i = 0; i < keys1.length; i++) {
-      if (keys2.indexOf(keys1[i]) !== -1) {
-        report[keys1[i]] = data[keys1[i]];
-      }
+    console.log(data);
+
+    report.company_info_test_report = { ...data.company_info_test_report };
+    report.company_info_person = { ...data.company_info_person };
+    report.company_info_receipt = { ...data.company_info_receipt };
+    report.is_domestic_consume = data.is_domestic_consume;
+    report.is_email_noti = data.is_email_noti;
+    report.is_export_to_country = data.is_export_to_country;
+    report.is_general_info = data.is_general_info;
+    report.is_line_noti = data.is_line_noti;
+    report.is_research = data.is_research;
+    if (data.other_objective) {
+      report.other_objective = data.other_objective;
+      othShow.value = true;
     }
-    console.log(report);
+    report.country = data.country;
+    report.delivery_means = data.delivery_means;
+    report.other_delivery_means = data.other_delivery_means;
+    report.by_post = data.by_post;
+    report.remark = data.remark;
+    if (data.other_address) {
+      report.other_address = { ...data.other_address };
+    }
 
     data.sample.forEach((element, index) => {
       delete element.id;
       samples.value.push({ id: index + 1, ...element });
     });
-    numb.value = data.sample.length;
-    console.log(report.value);
+    numb.value = samples.value.length;
+    console.log(numb.value);
   } catch (error) {
     console.log(error);
   }
 });
 
 watch(numb, (newValue, oldValue) => {
+  if (oldValue === null) {
+    return;
+  }
+
   if (numb.value < 0 || !numb.value) {
     numb.value = 0;
     samples.value = [];
   } else if (oldValue < newValue) {
+    if (newValue > 8) {
+      newValue.value = 8;
+      return;
+    }
     for (let i = oldValue + 1; i <= newValue; i++) {
       samples.value.push({ id: i, test_item: "01" });
     }
@@ -1036,6 +1070,7 @@ async function submit() {
     !report.company_info_test_report.name_th ||
     !report.company_info_test_report.sub_district
   ) {
+    console.log(report.company_info_test_report);
     $showToast("Fail", "error", 2000);
 
     error8.value = true;

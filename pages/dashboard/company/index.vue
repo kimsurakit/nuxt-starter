@@ -22,6 +22,7 @@ onMounted(async () => {
     });
     if (data.results) {
       address.value = [...data.results];
+      console.log(address.value);
     }
   } catch (error) {
     console.log(error.response);

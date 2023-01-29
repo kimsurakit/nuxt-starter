@@ -237,17 +237,10 @@ async function submitIndividual() {
                 ></TextInput>
                 <TextInput
                   class="w-full lg:w-12/12 px-4"
-                  msg="ที่อยู่ (ภาษาไทย)/Address"
-                  name="text"
-                  v-model="address.address_th"
-                ></TextInput>
-                <TextInput
-                  class="w-full lg:w-12/12 px-4"
                   msg="Company Name (English)"
                   name="text"
                   v-model="address.name_en"
                 ></TextInput>
-
                 <TextInput
                   class="w-full lg:w-6/12 px-4"
                   msg="เลขประจำตัวผู้เสียภาษี/Tax ID"
@@ -259,12 +252,21 @@ async function submitIndividual() {
                   msg="สาขาที่/Branch No."
                   name="text"
                   v-model="address.branch_no"
-                /><TextInput
+                />
+                <TextInput
+                  class="w-full lg:w-12/12 px-4"
+                  msg="ที่อยู่ (ภาษาไทย)/Address"
+                  name="text"
+                  v-model="address.address_th"
+                ></TextInput>
+
+                <TextInput
                   class="w-full lg:w-12/12 px-4"
                   msg="Address (English)"
                   name="text"
                   v-model="address.address_en"
                 ></TextInput>
+
                 <SubDistrictAuto
                   class="w-full lg:w-6/12 px-4"
                   msg="จังหวัด/PROVINCE"

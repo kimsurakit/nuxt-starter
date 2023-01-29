@@ -1,11 +1,8 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  ssr: false,
+  // ssr: false,
   runtimeConfig: {
-    public: {
-      apiBase:
-        "https://500c-2405-9800-b521-5f13-f589-5eb0-f6b3-4c6e.ap.ngrok.io",
-    },
+    public: { apiBase: process.env.NUXT_PUBLIC_API_BASE },
   },
   imports: {
     dirs: ["stores"],
