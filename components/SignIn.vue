@@ -102,6 +102,7 @@ async function submit() {
                   <span class="text-gray-700">Username</span>
                   <input
                     v-model="username"
+                    required
                     type="text"
                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                   />
@@ -110,6 +111,7 @@ async function submit() {
                   <span class="text-gray-700">Password</span>
                   <input
                     v-model="password"
+                    required
                     :type="typeInput"
                     class="mt-1 block w-full rounded-l-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                   />

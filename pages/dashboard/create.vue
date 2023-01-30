@@ -997,7 +997,26 @@ async function submit() {
 
     return;
   }
+  if (othShow.value && !report.other_objective) {
+    error1.value = true;
+    console.log(report.other_objective);
+    $showToast("Fail", "error", 2000);
+    show1.value = true;
+    show2.value = false;
+    window.scrollTo(0, 0);
 
+    return;
+  }
+  if (report.is_export_to_country && !report.country) {
+    error1.value = true;
+    console.log(report.other_objective);
+    $showToast("Fail", "error", 2000);
+    show1.value = true;
+    show2.value = false;
+    window.scrollTo(0, 0);
+
+    return;
+  }
   if (!samples.value.length) {
     $showToast("Fail", "error", 2000);
 
@@ -1025,6 +1044,16 @@ async function submit() {
     return;
   }
   if (!report.delivery_means) {
+    $showToast("Fail", "error", 2000);
+
+    error3.value = true;
+
+    show1.value = true;
+    show2.value = false;
+    window.scrollTo(0, 0);
+    return;
+  }
+  if (report.delivery_means === "OT" && !report.other_delivery_means) {
     $showToast("Fail", "error", 2000);
 
     error3.value = true;

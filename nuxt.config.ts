@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       apiBase:
-        "https://500c-2405-9800-b521-5f13-f589-5eb0-f6b3-4c6e.ap.ngrok.io/",
+        "https://b69b-2405-9800-b521-5f13-b4b1-4543-aeb3-9715.ap.ngrok.io/",
     },
   },
   imports: {

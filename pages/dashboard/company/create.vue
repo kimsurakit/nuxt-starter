@@ -10,13 +10,13 @@ const address = ref({
   tax_id: "",
   branch_no: "",
   address_th: "",
+  address_en: "",
+
   sub_district: "",
   sub_district_str: "",
   province: "",
   district: "",
   zip_code: "",
-
-  address_en: "",
 });
 
 const firstName = ref("");
@@ -28,8 +28,14 @@ const individual = ref({
   name_en: "",
   tax_id: "",
   branch_no: "",
-  address: "",
+  address_th: "",
+  address_en: "",
+
   sub_district: "",
+  sub_district_str: "",
+  province: "",
+  district: "",
+  zip_code: "",
 });
 const show = ref(false);
 const apiFetch = useBaseFetch();
@@ -130,7 +136,7 @@ async function submitIndividual() {
                   class="w-full lg:w-12/12 px-4"
                   msg="ที่อยู่/Address"
                   name="text"
-                  v-model="individual.address"
+                  v-model="individual.address_th"
                 ></TextInput>
 
                 <TextInput
@@ -149,7 +155,7 @@ async function submitIndividual() {
                   v-model:sub-district="individual.sub_district"
                   v-model:district="individual.district"
                   v-model:province="individual.province"
-                  v-model:subDistrictStr="individual.subDistrictStr"
+                  v-model:subDistrictStr="individual.sub_district_str"
                 ></SubDistrictAuto>
                 <SubDistrictAuto
                   class="w-full lg:w-6/12 px-4"
@@ -160,19 +166,19 @@ async function submitIndividual() {
                   v-model:sub-district="individual.sub_district"
                   v-model:district="individual.district"
                   v-model:province="individual.province"
-                  v-model:subDistrictStr="individual.subDistrictStr"
+                  v-model:subDistrictStr="individual.sub_district_str"
                 >
                 </SubDistrictAuto>
                 <SubDistrictAuto
                   class="w-full lg:w-6/12 px-4"
                   msg="ตำบล/แขวง/Sub-district"
                   url="/api/v1/sub_district"
-                  v-model="individual.subDistrictStr"
+                  v-model="individual.sub_district_str"
                   v-model:zipcode="individual.zip_code"
                   v-model:sub-district="individual.sub_district"
                   v-model:district="individual.district"
                   v-model:province="individual.province"
-                  v-model:subDistrictStr="individual.subDistrictStr"
+                  v-model:subDistrictStr="individual.sub_district_str"
                 ></SubDistrictAuto>
                 <SubDistrictAuto
                   class="w-full lg:w-6/12 px-4"
@@ -183,7 +189,7 @@ async function submitIndividual() {
                   v-model:sub-district="individual.sub_district"
                   v-model:district="individual.district"
                   v-model:province="individual.province"
-                  v-model:subDistrictStr="individual.subDistrictStr"
+                  v-model:subDistrictStr="individual.sub_district_str"
                 ></SubDistrictAuto>
               </div>
             </Section>
@@ -276,7 +282,7 @@ async function submitIndividual() {
                   v-model:zipcode="address.zip_code"
                   v-model:sub-district="address.sub_district"
                   v-model:district="address.district"
-                  v-model:subDistrictStr="address.subDistrictStr"
+                  v-model:subDistrictStr="address.sub_district_str"
                 ></SubDistrictAuto>
                 <SubDistrictAuto
                   class="w-full lg:w-6/12 px-4"
@@ -287,17 +293,17 @@ async function submitIndividual() {
                   v-model:zipcode="address.zip_code"
                   v-model:sub-district="address.sub_district"
                   v-model:district="address.district"
-                  v-model:subDistrictStr="address.subDistrictStr"
+                  v-model:subDistrictStr="address.sub_district_str"
                 >
                 </SubDistrictAuto>
                 <SubDistrictAuto
                   class="w-full lg:w-6/12 px-4"
                   msg="ตำบล/แขวง/Sub-district"
                   url="/api/v1/sub_district"
-                  v-model="address.subDistrictStr"
+                  v-model="address.sub_district_str"
                   v-model:province="address.province"
                   v-model:zipcode="address.zip_code"
-                  v-model:subDistrictStr="address.subDistrictStr"
+                  v-model:subDistrictStr="address.sub_district_str"
                   v-model:sub-district="address.sub_district"
                   v-model:district="address.district"
                 ></SubDistrictAuto>
@@ -310,7 +316,7 @@ async function submitIndividual() {
                   v-model:zipcode="address.zip_code"
                   v-model:sub-district="address.sub_district"
                   v-model:district="address.district"
-                  v-model:subDistrictStr="address.subDistrictStr"
+                  v-model:subDistrictStr="address.sub_district_str"
                 ></SubDistrictAuto>
               </div>
             </Section>

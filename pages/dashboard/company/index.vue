@@ -148,10 +148,10 @@ async function submit() {
               My Address
             </h1>
           </div>
-          <div class="grid grid-cols-6 gap-1">
+          <div class="grid grid-cols-12 gap-1">
             <NuxtLink
               to="/dashboard/company/create"
-              class="col-span-3 p-4 mb-6 rounded-md text-gray-600 hover:border-blue-500 border-2 cursor-pointer hover:text-blue-500"
+              class="xl:col-span-3 lg:col-span-4 sm:col-span-6 col-span-full p-4 mb-6 rounded-md text-gray-600 hover:border-blue-500 border-2 cursor-pointer hover:text-blue-500"
             >
               <div class="flex items-center justify-center">
                 <h2 class="mb-4 mr-auto text-xl font-semibold">
@@ -166,7 +166,7 @@ async function submit() {
               v-if="address"
               v-for="item in address"
               :key="item.id"
-              class="col-span-3 p-4 mb-6 rounded-md bg-gray-50"
+              class="xl:col-span-3 lg:col-span-4 sm:col-span-6 col-span-full p-4 mb-6 rounded-md bg-gray-50"
             >
               <div class="flex items-center justify-end">
                 <h2 class="mb-4 mr-auto text-xl font-semibold text-gray-600">

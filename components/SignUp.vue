@@ -132,6 +132,7 @@ function clearErrorFiled(filed) {
                         :class="{
                           'error-input': firstNameError,
                         }"
+                        required
                         @input="firstNameError = ''"
                         v-model="firstName"
                         type="text"
@@ -150,6 +151,7 @@ function clearErrorFiled(filed) {
                       :class="{
                         'error-input': lastNameError,
                       }"
+                      required
                       @input="lastNameError = ''"
                       v-model="lastName"
                       type="text"
@@ -168,6 +170,7 @@ function clearErrorFiled(filed) {
                       :class="{
                         'error-input': usernameError,
                       }"
+                      required
                       @input="usernameError = ''"
                       v-model="username"
                       type="text"
@@ -183,6 +186,7 @@ function clearErrorFiled(filed) {
                       :class="{
                         'error-input': emailError,
                       }"
+                      required
                       @input="emailError = ''"
                       v-model="email"
                       type="email"
@@ -190,58 +194,64 @@ function clearErrorFiled(filed) {
                       placeholder="john@example.com"
                     />
                   </label>
-                  <label class="block col-span-2 relative mr-7">
+                  <label class="block col-span-2 mr-7">
                     <span class="text-gray-700"
                       >Password
                       <span v-if="passwordError" class="text-pink-600">{{
                         passwordError
                       }}</span></span
                     >
-                    <input
-                      :class="{
-                        'error-input': passwordError,
-                      }"
-                      @input="passwordError = ''"
-                      v-model="password"
-                      :type="typeInput1"
-                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                    />
-                    <div
-                      @click="
-                        typeInput1 === 'password'
-                          ? (typeInput1 = 'text')
-                          : (typeInput1 = 'password')
-                      "
-                      class="-right-[41px] top-[28px] cursor-pointer rounded-r-md absolute border-2 text-lg w-[42px] h-[42px] text-center border-gray-300 shadow-sm"
-                    >
-                      <Icon name="ic:outline-remove-red-eye" />
+                    <div class="relative">
+                      <input
+                        :class="{
+                          'error-input': passwordError,
+                        }"
+                        required
+                        @input="passwordError = ''"
+                        v-model="password"
+                        :type="typeInput1"
+                        class="mt-1 block w-full rounded-l-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                      />
+                      <div
+                        @click="
+                          typeInput1 === 'password'
+                            ? (typeInput1 = 'text')
+                            : (typeInput1 = 'password')
+                        "
+                        class="-right-[41px] top-0 cursor-pointer rounded-r-md absolute border-2 text-lg w-[42px] h-[42px] text-center border-gray-300 shadow-sm"
+                      >
+                        <Icon name="ic:outline-remove-red-eye" />
+                      </div>
                     </div>
                   </label>
-                  <label class="block col-span-2 relative mr-7">
+                  <label class="block col-span-2 mr-7">
                     <span class="text-gray-700"
                       >Confirm password
                       <span v-if="rePasswordError" class="text-pink-600">{{
                         rePasswordError
                       }}</span></span
                     >
-                    <input
-                      :class="{
-                        'error-input': rePasswordError,
-                      }"
-                      @input="rePasswordError = ''"
-                      v-model="rePassword"
-                      :type="typeInput2"
-                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                    />
-                    <div
-                      @click="
-                        typeInput2 === 'password'
-                          ? (typeInput2 = 'text')
-                          : (typeInput2 = 'password')
-                      "
-                      class="-right-[41px] top-[28px] cursor-pointer rounded-r-md absolute border-2 text-lg w-[42px] h-[42px] text-center border-gray-300 shadow-sm"
-                    >
-                      <Icon name="ic:outline-remove-red-eye" />
+                    <div class="relative">
+                      <input
+                        :class="{
+                          'error-input': rePasswordError,
+                        }"
+                        required
+                        @input="rePasswordError = ''"
+                        v-model="rePassword"
+                        :type="typeInput2"
+                        class="mt-1 block w-full rounded-l-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                      />
+                      <div
+                        @click="
+                          typeInput2 === 'password'
+                            ? (typeInput2 = 'text')
+                            : (typeInput2 = 'password')
+                        "
+                        class="-right-[41px] top-0 cursor-pointer rounded-r-md absolute border-2 text-lg w-[42px] h-[42px] text-center border-gray-300 shadow-sm"
+                      >
+                        <Icon name="ic:outline-remove-red-eye" />
+                      </div>
                     </div>
                   </label>
                   <div class="p-4 col-span-2">
