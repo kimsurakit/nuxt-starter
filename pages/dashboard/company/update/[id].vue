@@ -4,11 +4,11 @@ definePageMeta({
 });
 
 const address = ref({
-  name: "",
+  name_th: "",
   name_en: "",
   tax_id: "",
   branch_no: "",
-  address: "",
+  address_th: "",
   province: "",
   district: "",
   sub_district: "",
@@ -76,13 +76,13 @@ onMounted(async () => {
                   class="w-full lg:w-12/12 px-4"
                   msg="ชื่อบริษัท"
                   name="text"
-                  v-model="address.name"
+                  v-model="address.name_th"
                 ></TextInput>
                 <TextInput
                   class="w-full lg:w-12/12 px-4"
                   msg="ที่อยู่"
                   name="text"
-                  v-model="address.address"
+                  v-model="address.address_th"
                 ></TextInput>
                 <TextInput
                   class="w-full lg:w-12/12 px-4"

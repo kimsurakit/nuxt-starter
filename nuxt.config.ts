@@ -2,10 +2,7 @@
 export default defineNuxtConfig({
   ssr: false,
   runtimeConfig: {
-    public: {
-      apiBase:
-        "https://b69b-2405-9800-b521-5f13-b4b1-4543-aeb3-9715.ap.ngrok.io/",
-    },
+    public: { apiBase: process.env.NUXT_PUBLIC_API_BASE },
   },
   imports: {
     dirs: ["stores"],

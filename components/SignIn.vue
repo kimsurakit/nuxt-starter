@@ -1,20 +1,21 @@
 <script setup>
+import { onClickOutside } from "@vueuse/core";
+
 const testModal = ref(null);
 const username = ref(null);
 const password = ref(null);
 const typeInput = ref("password");
 const usernameError = ref("");
+const { toggleSigin } = useShowModalStore();
 
 const { showModal } = storeToRefs(useShowModalStore());
 const { isAuth } = storeToRefs(useAuthUser());
 const { $showToast } = useNuxtApp();
 const clickBtn = ref(false);
-const callback = () => {
-  showModal.value = false;
-};
+
 const apiFetch = useBaseFetch();
 
-useClickOutside(testModal, callback);
+onClickOutside(testModal, toggleSigin);
 
 async function submit() {
   clickBtn.value = true;
@@ -29,7 +30,7 @@ async function submit() {
       }),
     });
     isAuth.value = true;
-    showModal.value = false;
+    toggleSigin();
     $showToast("Success", "success", 2000);
     await navigateTo("/dashboard/report");
   } catch (error) {

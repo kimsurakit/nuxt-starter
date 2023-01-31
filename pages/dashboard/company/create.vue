@@ -122,13 +122,13 @@ async function submitIndividual() {
                 ></TextInput>
                 <TextInput
                   class="w-full lg:w-6/12 px-4"
-                  msg="First Name (English"
+                  msg="First Name (English)"
                   name="text"
                   v-model="firstNameEn"
                 ></TextInput>
                 <TextInput
                   class="w-full lg:w-6/12 px-4"
-                  msg="Last Name (English"
+                  msg="Last Name (English)"
                   name="text"
                   v-model="lastNameEn"
                 ></TextInput>

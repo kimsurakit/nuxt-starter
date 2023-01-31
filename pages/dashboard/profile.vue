@@ -74,19 +74,10 @@ onMounted(async () => {
                   <div class="px-4 py-2">{{ user.telephone }}</div>
                 </div>
                 <div class="grid grid-cols-2">
-                  <div class="px-4 py-2 font-semibold">Address</div>
-                  <div class="px-4 py-2">
-                    {{
-                      [
-                        user.address,
-                        user.province,
-                        user.district,
-                        user.sub_district,
-                        user.zip_code,
-                      ].join(",")
-                    }}
-                  </div>
+                  <div class="px-4 py-2 font-semibold">Mobile</div>
+                  <div class="px-4 py-2">{{ user.mobile }}</div>
                 </div>
+
                 <div class="grid grid-cols-2">
                   <div class="px-4 py-2 font-semibold">Email.</div>
                   <div class="px-4 py-2">

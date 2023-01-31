@@ -4,6 +4,12 @@ export const useShowModalStore = defineStore("showModal", {
     toggle() {
       this.showModal = true;
     },
+    toggleSigin() {
+      this.showModal = !this.showModal;
+      this.showModal
+        ? (document.documentElement.style.overflow = "hidden")
+        : (document.documentElement.style.overflow = "");
+    },
     toggleSigup() {
       this.showSigup = !this.showSigup;
       this.showSigup

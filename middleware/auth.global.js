@@ -1,26 +1,45 @@
 export default defineNuxtRouteMiddleware(async (to, from) => {
   const apiFetch = useBaseFetch();
+  const { toggleSigin } = useShowModalStore();
 
   const { isAuth } = storeToRefs(useAuthUser());
-  const { showModal } = storeToRefs(useShowModalStore());
-  try {
-    await apiFetch("/auth/jwt/verify/", {
-      method: "POST",
-      credentials: "include",
-    }).then(() => (isAuth.value = true));
-  } catch (error) {
-    console.log(error);
+
+  if (isAuth.value === true || isAuth.value === null) {
     try {
-      await apiFetch("/auth/jwt/refresh/", {
+      await apiFetch("/auth/jwt/verify/", {
         method: "POST",
         credentials: "include",
-      }).then(() => (isAuth.value = true));
-    } catch (err) {
-      isAuth.value = false;
-      if (to.path !== "/") {
-        showModal.value = true;
-        return navigateTo("/");
+        async onResponse({ request, response, options }) {
+          if (response.status === 200) {
+            isAuth.value = true;
+          }
+        },
+      });
+
+      isAuth.value = true;
+    } catch (error) {
+      if (error.status === 401) {
+        try {
+          const refreshResponse = await apiFetch("/auth/jwt/refresh/", {
+            method: "POST",
+            credentials: "include",
+            async onResponse({ request, response, options }) {
+              if (response.status === 200) {
+                isAuth.value = true;
+              }
+            },
+          });
+        } catch (error) {
+          if (error.status === 401) {
+            isAuth.value = false;
+          }
+        }
       }
     }
+  }
+
+  if (to.path !== "/" && !isAuth.value) {
+    toggleSigin();
+    return await navigateTo("/");
   }
 });

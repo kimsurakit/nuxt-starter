@@ -1,6 +1,6 @@
 <script setup>
 const { toggle } = useShowModalStore();
-const { toggleSigup } = useShowModalStore();
+const { toggleSigup, toggleSigin } = useShowModalStore();
 const { isAuth } = storeToRefs(useAuthUser());
 const apiFetch = useBaseFetch();
 
@@ -124,14 +124,12 @@ async function logout() {
             class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0"
           >
             <button
-              id="openModal"
-              @click="toggle"
+              @click="toggleSigin"
               class="inline-block rounded-lg py-1 px-2 text-sm text-white hover:ring-2 hover:ring-slate-100 hover:ring-inset"
             >
               Sign in
             </button>
             <button
-              id="openModal"
               @click="toggleSigup"
               class="inline-block rounded-lg py-1 px-2 text-sm text-white hover:bg-slate-100 hover:text-slate-900"
             >

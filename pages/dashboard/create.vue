@@ -134,13 +134,13 @@
                 </div>
                 <div class="flex bg-white text-lg border-gray-200 border-b">
                   <div class="hidden lg:block w-full lg:w-2/12 p-4 text-center">
-                    ลำดับ No.
+                    ลำดับ/No.
                   </div>
                   <div class="w-full lg:w-5/12 p-4 text-center">
-                    ชื่อตัวอย่าง/รหัสตัวอย่าง Sample & Code Name
+                    ชื่อตัวอย่าง or รหัสตัวอย่าง / Sample or Code Name
                   </div>
                   <div class="w-full lg:w-5/12 p-4 text-center">
-                    รายการทดสอบ Test item
+                    รายการทดสอบ / Test item
                   </div>
                 </div>
 
@@ -326,6 +326,8 @@
                       class="w-full lg:w-6/12 px-4"
                       msg="เลขประจำตัวผู้เสียภาษี/Tax ID"
                       name="text"
+                      placeholder="13 ตัว"
+                      maxlength="13"
                       v-model="report.company_info_receipt.tax_id"
                     />
                     <TextInput
@@ -454,18 +456,7 @@
                       name="text"
                       v-model="report.company_info_test_report.name_en"
                     ></TextInput>
-                    <TextInput
-                      class="w-full lg:w-6/12 px-4"
-                      msg="เลขประจำตัวผู้เสียภาษี/Tax ID"
-                      name="text"
-                      v-model="report.company_info_test_report.tax_id"
-                    />
-                    <TextInput
-                      class="w-full lg:w-6/12 px-4"
-                      msg="สาขาที่/Branch No."
-                      name="text"
-                      v-model="report.company_info_test_report.branch_no"
-                    />
+
                     <TextInput
                       class="w-full lg:w-12/12 px-4"
                       msg="ที่อยู่ (ภาษาไทย)/ADDRESS"
@@ -787,6 +778,7 @@
                   </div>
                 </button>
                 <button
+                  :disabled="show"
                   class="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md border-orange-500 border-2 text-orange-500 bg-white hover:bg-orange-400 transition ease-in-out duration-150 cursor-pointer"
                   type="submit"
                 >
@@ -814,6 +806,7 @@
                   Save
                 </button>
                 <button
+                  :disabled="show"
                   class="inline-flex items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-orange-500 hover:bg-orange-400 transition ease-in-out duration-150 cursor-pointer"
                   type="submit"
                 >
@@ -864,24 +857,6 @@ const error5 = ref(false);
 const error6 = ref(false);
 const error7 = ref(false);
 const error8 = ref(false);
-const lang_th = reactive({
-  language: "TH",
-  company_name: "",
-  address: "",
-  province: "",
-  district: "",
-  sub_district: "",
-  zip_code: "",
-});
-const lang_en = reactive({
-  language: "EN",
-  company_name: "",
-  address: "",
-  province: "",
-  district: "",
-  sub_district: "",
-  zip_code: "",
-});
 
 const checkComp = ref(false);
 const show = ref(false);
@@ -1065,11 +1040,22 @@ async function submit() {
   }
   if (
     !report.company_info_receipt.address_th ||
-    !report.company_info_receipt.branch_no ||
     !report.company_info_receipt.name_en ||
     !report.company_info_receipt.name_th ||
-    !report.company_info_receipt.sub_district ||
-    !report.company_info_receipt.tax_id
+    !report.company_info_receipt.sub_district
+  ) {
+    $showToast("Fail", "error", 2000);
+
+    error7.value = true;
+
+    show1.value = false;
+    show2.value = true;
+    window.scrollTo(0, 0);
+    return;
+  }
+  if (
+    report.company_info_receipt.tax_id &&
+    report.company_info_receipt.tax_id.length < 13
   ) {
     $showToast("Fail", "error", 2000);
 
@@ -1083,7 +1069,6 @@ async function submit() {
   if (
     !report.company_info_test_report.address_en ||
     !report.company_info_test_report.address_th ||
-    !report.company_info_test_report.branch_no ||
     !report.company_info_test_report.name_en ||
     !report.company_info_test_report.name_th ||
     !report.company_info_test_report.sub_district
