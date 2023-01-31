@@ -18,60 +18,63 @@ const lastNameError = ref("");
 const usernameError = ref("");
 const passwordError = ref("");
 const rePasswordError = ref("");
-const emailError = ref();
+const emailError = ref("");
 const email = ref();
 const password = ref();
 const rePassword = ref();
 const { $showToast } = useNuxtApp();
 const apiFetch = useBaseFetch();
+const clickBtn = ref(false);
 
 async function onSubmit() {
-  const data = await apiFetch("/auth/users/", {
-    method: "POST",
-    body: JSON.stringify({
-      email: email.value,
-      first_name: firstName.value,
-      last_name: lastName.value,
-      username: username.value,
-      password: password.value,
-      re_password: rePassword.value,
-    }),
-  })
-    .then(() => {
-      $showToast("Success", "success", 2000);
-      closeModal();
-    })
-    .catch((error) => {
-      console.log(error.response._data);
-      firstNameError.value =
-        "first_name" in error.response._data
-          ? error.response._data.first_name[0]
-          : "";
-      lastNameError.value =
-        "last_name" in error.response._data
-          ? error.response._data.last_name[0]
-          : "";
-      emailError.value =
-        "email" in error.response._data ? error.response._data.email[0] : "";
-      usernameError.value =
-        "username" in error.response._data
-          ? error.response._data.username[0]
-          : "";
-      passwordError.value =
-        "password" in error.response._data
-          ? error.response._data.password[0]
-          : "";
-      rePasswordError.value =
-        "re_password" in error.response._data
-          ? error.response._data.re_password[0]
-          : "";
-      if ("non_field_errors" in error.response._data) {
-        passwordError.value = error.response._data.non_field_errors[0];
-        rePasswordError.value = error.response._data.non_field_errors[0];
-      }
-
-      $showToast("Fail", "error", 2000);
+  clickBtn.value = true;
+  try {
+    const data = await apiFetch("/auth/users/", {
+      method: "POST",
+      body: JSON.stringify({
+        email: email.value,
+        first_name: firstName.value,
+        last_name: lastName.value,
+        username: username.value,
+        password: password.value,
+        re_password: rePassword.value,
+      }),
     });
+    $showToast("Success", "success", 2000);
+    closeModal();
+    await navigateTo("success");
+  } catch (error) {
+    console.log(error.response._data);
+    firstNameError.value =
+      "first_name" in error.response._data
+        ? error.response._data.first_name[0]
+        : "";
+    lastNameError.value =
+      "last_name" in error.response._data
+        ? error.response._data.last_name[0]
+        : "";
+    emailError.value =
+      "email" in error.response._data ? error.response._data.email[0] : "";
+    usernameError.value =
+      "username" in error.response._data
+        ? error.response._data.username[0]
+        : "";
+    passwordError.value =
+      "password" in error.response._data
+        ? error.response._data.password[0]
+        : "";
+    rePasswordError.value =
+      "re_password" in error.response._data
+        ? error.response._data.re_password[0]
+        : "";
+    if ("non_field_errors" in error.response._data) {
+      rePasswordError.value = error.response._data.non_field_errors[0];
+    }
+
+    $showToast("Fail", "error", 2000);
+  } finally {
+    clickBtn.value = false;
+  }
 }
 
 function clearErrorFiled(filed) {
@@ -119,7 +122,16 @@ function clearErrorFiled(filed) {
         >
           <form @submit.prevent="onSubmit">
             <div class="bg-white px-9 pt-5 pb-4 sm:p-6 sm:pb-4">
-              <h2 class="text-2xl font-bold">Let's Get You Signed Up</h2>
+              <div class="flex justify-between">
+                <h2 class="text-2xl font-bold">Let's Get You Signed Up</h2>
+
+                <div
+                  @click="toggleSigup"
+                  class="p-2 hover:border-gray-400 border-transparent border cursor-pointer"
+                >
+                  <Icon class="text-2xl" name="ic:baseline-close" />
+                </div>
+              </div>
               <div class="mt-8">
                 <div class="grid grid-cols-2 gap-6">
                   <div :class="{ 'error-input': false }">
@@ -257,10 +269,41 @@ function clearErrorFiled(filed) {
                   <div class="p-4 col-span-2">
                     <div class="flex flex-col items-center shrink-0">
                       <button
-                        class="group inline-flex items-center justify-center rounded-full py-2 px-4 text-sm font-semibold focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 bg-gray-800 text-white hover:text-slate-100 hover:bg-gray-500 active:bg-gray-800 active:text-gray-100 focus-visible:outline-gray-600 w-full"
+                        :disabled="
+                          clickBtn ||
+                          firstNameError !== '' ||
+                          lastNameError !== '' ||
+                          emailError !== '' ||
+                          usernameError !== '' ||
+                          passwordError !== ''
+                        "
+                        class="disabled:bg-gray-500 group inline-flex items-center justify-center rounded-full py-2 px-4 text-sm font-semibold focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 bg-gray-800 text-white hover:text-slate-100 hover:bg-gray-500 active:bg-gray-800 active:text-gray-100 focus-visible:outline-gray-600 w-full"
                         type="submit"
                       >
-                        <span>Sign up <span aria-hidden="true">→</span></span>
+                        <span v-if="!clickBtn"
+                          >Sign up <span aria-hidden="true">→</span></span
+                        >
+                        <svg
+                          v-else
+                          class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            class="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            stroke-width="4"
+                          ></circle>
+                          <path
+                            class="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          ></path>
+                        </svg>
                       </button>
                     </div>
                   </div>

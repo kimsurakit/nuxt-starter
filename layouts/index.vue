@@ -11,7 +11,7 @@
   </div>
   <div
     :class="{ hidden: !sideShow }"
-    class="sidebar fixed top-0 bottom-0 lg:left-0 p-2 w-64 overflow-y-auto text-center bg-darkGreen z-50"
+    class="flex flex-col sidebar fixed top-0 bottom-0 lg:left-0 p-2 w-72 overflow-y-auto text-center bg-darkGreen z-50"
   >
     <div class="text-gray-100 text-xl">
       <div class="p-2.5 mt-1 flex items-center">
@@ -23,51 +23,59 @@
           @click="sideShow = false"
           class="h-8 w-8 cursor-pointer ml-auto lg:hidden hover:bg-gray-500 rounded-full text-center"
         >
-          <Icon name="ic:baseline-close" />
+          <Icon class="text-2xl" name="ic:baseline-close" />
         </div>
       </div>
       <div class="my-2 bg-gray-600 h-[1px]"></div>
     </div>
-    <div
-      class="p-2.5 flex items-center rounded-md px-4 duration-300 cursor-pointer"
-    >
-      <input
-        type="text"
-        placeholder="Search"
-        class="mt-1 block w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
-      />
-    </div>
+
     <NuxtLink
       to="/"
       class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-orange-600 text-white"
     >
+      <Icon class="text-2xl" name="ic:baseline-home" />
       <span class="text-[15px] ml-4 text-gray-200 font-bold">Home</span>
     </NuxtLink>
     <NuxtLink
       to="/dashboard/profile"
       class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-orange-600 text-white"
     >
+      <Icon class="text-2xl" name="ic:baseline-account-circle" />
       <span class="text-[15px] ml-4 text-gray-200 font-bold">User Profile</span>
     </NuxtLink>
     <NuxtLink
       to="/dashboard/company"
       class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-orange-600 text-white"
     >
+      <Icon class="text-2xl" name="ic:baseline-home-work" />
       <span class="text-[15px] ml-4 text-gray-200 font-bold">My address</span>
     </NuxtLink>
-    <div class="my-4 bg-orange-600 h-[1px]"></div>
-    <NuxtLink
-      to="/dashboard/report"
+    <div class="my-4 bg-gray-200 h-[1px]"></div>
+    <button
+      type="button"
+      @click="submenu = !submenu"
       class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-orange-600 text-white"
     >
+      <Icon class="text-2xl" name="ic:baseline-app-registration" />
       <div class="flex justify-between w-full items-center">
-        <span class="text-[15px] ml-4 text-gray-200 font-bold w-full">
+        <span class="text-[15px] ml-4 text-gray-200 font-bold">
           DNA Testing Application
         </span>
-        <Icon name="ic:baseline-keyboard-arrow-down" />
+
+        <Icon
+          v-show="!submenu"
+          class="text-2xl"
+          name="ic:baseline-keyboard-arrow-up"
+        />
+        <Icon
+          v-show="submenu"
+          class="text-2xl"
+          name="ic:baseline-keyboard-arrow-down"
+        />
       </div>
-    </NuxtLink>
+    </button>
     <div
+      v-show="submenu"
       class="text-left text-sm mt-2 w-4/5 mx-auto text-gray-200 font-bold"
       id="submenu"
     >
@@ -84,19 +92,21 @@
     </div>
     <div
       @click="logout"
-      class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-orange-600 text-white"
+      class="p-2.5 mt-auto mb-4 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-orange-600 text-white"
     >
+      <Icon class="text-2xl" name="ic:baseline-logout" />
       <span class="text-[15px] ml-4 text-gray-200 font-bold">Logout</span>
     </div>
   </div>
-  <div :class="{ 'md:ml-64': sideShow }" class="relative">
-    <div class="px-4 md:px-10 mx-auto w-full -m-24 pt-32">
+  <div :class="{ 'md:ml-72': sideShow }" class="relative">
+    <div class="px-4 md:px-7 mx-auto w-full -m-24 pt-32">
       <slot />
     </div>
   </div>
 </template>
 <script setup>
 const sideShow = ref(true);
+const submenu = ref(false);
 
 const minMediaQuery = window.matchMedia("(max-width: 768px)");
 const maxMediaQuery = window.matchMedia("(min-width: 1024px)");

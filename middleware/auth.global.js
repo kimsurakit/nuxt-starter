@@ -1,5 +1,6 @@
 export default defineNuxtRouteMiddleware(async (to, from) => {
   const apiFetch = useBaseFetch();
+  const exceptPath = ["resend_email", "activate-uid-token", "success"];
   const { toggleSigin } = useShowModalStore();
 
   const { isAuth } = storeToRefs(useAuthUser());
@@ -37,8 +38,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
       }
     }
   }
-
-  if (to.path !== "/" && !isAuth.value) {
+  if (to.path !== "/" && !isAuth.value && !exceptPath.includes(to.name)) {
     toggleSigin();
     return await navigateTo("/");
   }

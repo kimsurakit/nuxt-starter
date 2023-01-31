@@ -12,20 +12,7 @@ const user = ref({
   line_id: "",
   telephone: "",
   mobile: "",
-  address: "",
-  province: "",
-  district: "",
-  sub_district: "",
-  zip_code: "",
-  company_name: "",
-  tax_id: "",
-  branch_no: "",
-  company_address: "",
-  company_province: "",
-  company_district: "",
-  company_sub_district: "",
-  company_zip_code: "",
-  id: null,
+
   username: "",
 });
 onMounted(async () => {
@@ -46,46 +33,55 @@ onMounted(async () => {
       <div
         class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-gray-100 border-0"
       >
-        <div class="rounded-t bg-white mb-0 px-6 py-6">
-          <div class="bg-white p-3 shadow-sm rounded-sm">
-            <div
-              class="flex items-center space-x-2 font-semibold text-gray-900 leading-8"
-            ></div>
-            <div class="text-gray-700">
-              <div class="grid md:grid-cols-2 text-sm">
-                <div class="grid grid-cols-2">
-                  <div class="px-4 py-2 font-semibold">First Name</div>
-                  <div class="px-4 py-2">{{ user.first_name }}</div>
-                </div>
-                <div class="grid grid-cols-2">
-                  <div class="px-4 py-2 font-semibold">Last Name</div>
-                  <div class="px-4 py-2">{{ user.last_name }}</div>
-                </div>
-                <div class="grid grid-cols-2">
-                  <div class="px-4 py-2 font-semibold">Position</div>
-                  <div class="px-4 py-2">{{ user.position }}</div>
-                </div>
-                <div class="grid grid-cols-2">
-                  <div class="px-4 py-2 font-semibold">Line ID</div>
-                  <div class="px-4 py-2">{{ user.line_id }}</div>
-                </div>
-                <div class="grid grid-cols-2">
-                  <div class="px-4 py-2 font-semibold">Telephone</div>
-                  <div class="px-4 py-2">{{ user.telephone }}</div>
-                </div>
-                <div class="grid grid-cols-2">
-                  <div class="px-4 py-2 font-semibold">Mobile</div>
-                  <div class="px-4 py-2">{{ user.mobile }}</div>
-                </div>
-
-                <div class="grid grid-cols-2">
-                  <div class="px-4 py-2 font-semibold">Email.</div>
-                  <div class="px-4 py-2">
-                    <a class="text-blue-800">{{ user.email }}</a>
-                  </div>
-                </div>
-              </div>
-            </div>
+        <div class="rounded-t bg-white mb-0 px-6 py-6 col-span-2">
+          <div class="p-3 shadow-sm rounded-sm">
+            <ul class="flex flex-col pl-0 mb-0 rounded-lg">
+              <li
+                class="relative block px-4 py-2 pt-0 pl-0 leading-normal bg-white border-0 rounded-t-lg text-size-sm text-inherit"
+              >
+                <strong class="text-slate-700">Full Name:</strong> &nbsp;
+                {{ user.first_name }} {{ user.last_name }}
+              </li>
+              <li
+                class="relative block px-4 py-2 pt-0 pl-0 leading-normal bg-white border-0 rounded-t-lg text-size-sm text-inherit"
+              >
+                <strong class="text-slate-700">Position:</strong> &nbsp;
+                {{ user.position }}
+              </li>
+              <li
+                class="relative block px-4 py-2 pt-0 pl-0 leading-normal bg-white border-0 rounded-t-lg text-size-sm text-inherit"
+              >
+                <strong class="text-slate-700">Username:</strong> &nbsp;
+                {{ user.username }}
+              </li>
+              <li
+                class="relative block px-4 py-2 pl-0 leading-normal bg-white border-0 border-t-0 text-size-sm text-inherit"
+              >
+                <strong class="text-slate-700">Mobile:</strong> &nbsp;
+                {{ user.mobile }}
+              </li>
+              <li
+                class="relative block px-4 py-2 pl-0 leading-normal bg-white border-0 border-t-0 text-size-sm text-inherit"
+              >
+                <strong class="text-slate-700">Email:</strong> &nbsp;
+                {{ user.email }}
+              </li>
+              <li
+                class="relative block px-4 py-2 pl-0 leading-normal bg-white border-0 border-t-0 text-size-sm text-inherit"
+              >
+                <strong class="text-slate-700">Telephone:</strong> &nbsp;
+                {{ user.telephone }}
+              </li>
+              <li
+                class="relative block px-4 py-2 pb-0 pl-0 bg-white border-0 border-t-0 rounded-b-lg text-inherit"
+              >
+                <strong class="leading-normal text-size-sm text-slate-700"
+                  >Line ID:</strong
+                >
+                &nbsp;
+                {{ user.line_id }}
+              </li>
+            </ul>
             <NuxtLink
               to="/dashboard/user"
               class="block w-full text-center text-orange-500 text-sm font-semibold rounded-lg hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4"

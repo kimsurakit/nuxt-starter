@@ -3,7 +3,7 @@ definePageMeta({
   layout: "index",
 });
 const data = ref([]);
-const n = ref("");
+const n = ref(null);
 const prev = ref(false);
 const apiFetch = useBaseFetch();
 
@@ -180,7 +180,7 @@ async function testPrev() {
                     @click="test"
                     :disabled="!n"
                     :class="[!n ? 'hover:bg-withe' : 'hover:bg-gray-50']"
-                    class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                    class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700"
                   >
                     Next
                   </button>

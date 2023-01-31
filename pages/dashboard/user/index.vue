@@ -15,7 +15,7 @@
         <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
           <form @submit.prevent="submit">
             <Section msg="ข้อมูลช่องทางติดต่อของผู้ใช้ / User information">
-              <div class="flex flex-wrap gap-y-3 lg:w-1/2 w-full">
+              <div class="flex flex-wrap gap-y-3 lg:max-w-lg w-full">
                 <!-- <TextInput
                   class="w-full lg:w-6/12 px-4"
                   v-model="user.username"
@@ -171,11 +171,9 @@
 <script setup>
 definePageMeta({
   layout: "index",
-  middleware: ["check"],
 });
 const apiFetch = useBaseFetch();
 
-const authUser = useAuthUser();
 const user = ref({
   first_name: "",
   last_name: "",

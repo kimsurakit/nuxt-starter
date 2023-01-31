@@ -1,5 +1,5 @@
 <script setup>
-const { toggle } = useShowModalStore();
+const mobileMenu = ref(false);
 const { toggleSigup, toggleSigin } = useShowModalStore();
 const { isAuth } = storeToRefs(useAuthUser());
 const apiFetch = useBaseFetch();
@@ -25,56 +25,19 @@ async function logout() {
         <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
           <!-- Mobile menu button-->
           <button
+            @click="mobileMenu = !mobileMenu"
             type="button"
             class="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
             aria-controls="mobile-menu"
             aria-expanded="false"
           >
             <span class="sr-only">Open main menu</span>
-            <!--
-            Icon when menu is closed.
-
-            Heroicon name: outline/bars-3
-
-            Menu open: "hidden", Menu closed: "block"
-          -->
-            <svg
+            <Icon
+              v-if="!mobileMenu"
               class="block h-6 w-6"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              aria-hidden="true"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-              />
-            </svg>
-            <!--
-            Icon when menu is open.
-
-            Heroicon name: outline/x-mark
-
-            Menu open: "block", Menu closed: "hidden"
-          -->
-            <svg
-              class="hidden h-6 w-6"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              aria-hidden="true"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
+              name="ic:baseline-menu"
+            />
+            <Icon v-else class="block h-6 w-6" name="ic:baseline-close" />
           </button>
         </div>
         <div
@@ -114,24 +77,34 @@ async function logout() {
           <div v-if="isAuth">
             <button
               @click="logout"
-              class="inline-block rounded-lg py-1 px-2 text-sm text-white hover:ring-2 hover:ring-slate-100 hover:ring-inset"
+              class="bg-white hover:bg-orange-600 hover:text-white focus:outline-none focus:ring focus:ring-orange-300 px-5 py-2 text-sm leading-5 rounded-full font-semibold text-gray-800"
             >
               Logout
             </button>
           </div>
           <div
             v-else
-            class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0"
+            class="gap-x-3 absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0"
           >
+            <NuxtLink
+              class="hidden sm:block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+              to="/resend_email"
+            >
+              <div class="flex items-center">
+                <Icon class="mr-1" name="ic:baseline-email" />
+
+                <span>Resend Email</span>
+              </div></NuxtLink
+            >
             <button
               @click="toggleSigin"
-              class="inline-block rounded-lg py-1 px-2 text-sm text-white hover:ring-2 hover:ring-slate-100 hover:ring-inset"
+              class="bg-darkGreen border-2 hover:border-orange-600 hover:text-orange-600 hover:bg-white focus:outline-none focus:ring focus:ring-orange-300 active:bg-orange-700 px-5 py-2 text-sm leading-5 rounded-full font-semibold text-white"
             >
               Sign in
             </button>
             <button
               @click="toggleSigup"
-              class="inline-block rounded-lg py-1 px-2 text-sm text-white hover:bg-slate-100 hover:text-slate-900"
+              class="bg-orange-600 focus:outline-none focus:ring focus:ring-orange-300 px-5 py-2 text-sm leading-5 rounded-full font-semibold text-white"
             >
               Sign up
             </button>
@@ -141,7 +114,7 @@ async function logout() {
     </div>
 
     <!-- Mobile menu, show/hide based on menu state. -->
-    <div class="sm:hidden" id="mobile-menu">
+    <div class="sm:hidden" v-show="mobileMenu">
       <div class="space-y-1 px-2 pt-2 pb-3">
         <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
         <NuxtLink
@@ -153,6 +126,11 @@ async function logout() {
           class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
           to="/dashboard/report"
           >DNA Testing Application</NuxtLink
+        >
+        <NuxtLink
+          class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+          to="/resend_email"
+          >Resend Email</NuxtLink
         >
         <!-- <NuxtLink
           class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
