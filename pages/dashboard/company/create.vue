@@ -112,30 +112,35 @@ async function submitIndividual() {
                   class="w-full lg:w-6/12 px-4"
                   msg="ชื่อ/First Name"
                   name="text"
+                  required="true"
                   v-model="firstName"
                 ></TextInput>
                 <TextInput
                   class="w-full lg:w-6/12 px-4"
                   msg="นามสกุล/Last Name"
                   name="text"
+                  required="true"
                   v-model="lastName"
                 ></TextInput>
                 <TextInput
                   class="w-full lg:w-6/12 px-4"
                   msg="First Name (English)"
                   name="text"
+                  required="true"
                   v-model="firstNameEn"
                 ></TextInput>
                 <TextInput
                   class="w-full lg:w-6/12 px-4"
                   msg="Last Name (English)"
                   name="text"
+                  required="true"
                   v-model="lastNameEn"
                 ></TextInput>
                 <TextInput
                   class="w-full lg:w-12/12 px-4"
                   msg="ที่อยู่/Address"
                   name="text"
+                  required="true"
                   v-model="individual.address_th"
                 ></TextInput>
 
@@ -143,6 +148,7 @@ async function submitIndividual() {
                   class="w-full lg:w-12/12 px-4"
                   msg="ที่อยู่(ภาษาอังกฤษ)"
                   name="text"
+                  required="true"
                   v-model="individual.address_en"
                 ></TextInput>
 
@@ -239,30 +245,38 @@ async function submitIndividual() {
                   class="w-full lg:w-12/12 px-4"
                   msg="ชื่อบริษัท (ภาษาไทย) "
                   name="text"
+                  required="true"
                   v-model="address.name_th"
                 ></TextInput>
                 <TextInput
                   class="w-full lg:w-12/12 px-4"
                   msg="Company Name (English)"
                   name="text"
+                  required="true"
                   v-model="address.name_en"
                 ></TextInput>
                 <TextInput
                   class="w-full lg:w-6/12 px-4"
                   msg="เลขประจำตัวผู้เสียภาษี/Tax ID"
                   name="text"
+                  placeholder="13ตัว"
+                  maxlength="13"
+                  minlength="13"
+                  required="true"
                   v-model="address.tax_id"
                 />
                 <TextInput
                   class="w-full lg:w-6/12 px-4"
                   msg="สาขาที่/Branch No."
                   name="text"
+                  required="true"
                   v-model="address.branch_no"
                 />
                 <TextInput
                   class="w-full lg:w-12/12 px-4"
                   msg="ที่อยู่ (ภาษาไทย)/Address"
                   name="text"
+                  required="true"
                   v-model="address.address_th"
                 ></TextInput>
 
@@ -270,6 +284,7 @@ async function submitIndividual() {
                   class="w-full lg:w-12/12 px-4"
                   msg="Address (English)"
                   name="text"
+                  required="true"
                   v-model="address.address_en"
                 ></TextInput>
 

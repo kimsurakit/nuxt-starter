@@ -2,7 +2,11 @@
 definePageMeta({
   layout: "index",
 });
+const firstName = ref("");
+const lastName = ref("");
+const firstNameEN = ref("");
 
+const lastNameEN = ref("");
 const address = ref({
   name_th: "",
   name_en: "",
@@ -24,7 +28,8 @@ const show = ref(false);
 const apiFetch = useBaseFetch();
 const { $showToast } = useNuxtApp();
 async function submit() {
-  console.log(JSON.stringify(address.value));
+  address.value.name_th = firstName.value.concat(" ", lastName.value);
+  address.value.name_en = firstNameEN.value.concat(" ", lastNameEN.value);
   try {
     const response = await apiFetch(
       `/api/v1/address/update/${route.params.id}/`,
@@ -47,13 +52,18 @@ async function submit() {
   }
 }
 onMounted(async () => {
-  console.log();
   try {
     const data = await apiFetch(`/api/v1/address/detail/${route.params.id}`, {
       credentials: "include",
     });
 
     address.value = { ...data };
+    let test = address.value.name_th.split(" ");
+    let test1 = address.value.name_en.split(" ");
+    firstName.value = test[0];
+    lastName.value = test[1];
+    firstNameEN.value = test1[0];
+    lastNameEN.value = test1[1];
   } catch (error) {
     if (error.status == 404) {
       console.log(error.status);
@@ -73,39 +83,81 @@ onMounted(async () => {
             <Section msg="ข้อมูลบริษัท /Company information">
               <div class="w-full flex flex-wrap gap-y-3">
                 <TextInput
+                  v-if="address.tax_id"
                   class="w-full lg:w-12/12 px-4"
                   msg="ชื่อบริษัท"
                   name="text"
+                  required="true"
                   v-model="address.name_th"
+                ></TextInput>
+                <TextInput
+                  v-if="!address.tax_id"
+                  class="w-full lg:w-6/12 px-4"
+                  msg="ชื่อ/FIRST NAME"
+                  name="text"
+                  required="true"
+                  v-model="firstName"
+                ></TextInput>
+                <TextInput
+                  v-if="!address.tax_id"
+                  class="w-full lg:w-6/12 px-4"
+                  msg="นามสกุล/LAST NAME"
+                  name="text"
+                  required="true"
+                  v-model="lastName"
+                ></TextInput>
+                <TextInput
+                  v-if="address.tax_id"
+                  class="w-full lg:w-12/12 px-4"
+                  msg="Company name"
+                  name="text"
+                  required="true"
+                  v-model="address.name_en"
+                ></TextInput>
+                <TextInput
+                  v-if="!address.tax_id"
+                  class="w-full lg:w-6/12 px-4"
+                  msg="FIRST NAME (ENGLISH)"
+                  required="true"
+                  name="text"
+                  v-model="firstNameEN"
+                ></TextInput>
+                <TextInput
+                  v-if="!address.tax_id"
+                  class="w-full lg:w-6/12 px-4"
+                  msg="LAST NAME (ENGLISH)"
+                  name="text"
+                  required="true"
+                  v-model="lastNameEN"
                 ></TextInput>
                 <TextInput
                   class="w-full lg:w-12/12 px-4"
                   msg="ที่อยู่"
                   name="text"
+                  required="true"
                   v-model="address.address_th"
-                ></TextInput>
-                <TextInput
-                  class="w-full lg:w-12/12 px-4"
-                  msg="Company name"
-                  name="text"
-                  v-model="address.name_en"
                 ></TextInput>
 
                 <TextInput
+                  v-if="address.tax_id"
                   class="w-full lg:w-6/12 px-4"
                   msg="เลขประจำตัวผู้เสียภาษี/Tax ID"
                   name="text"
+                  required="true"
                   v-model="address.tax_id"
                 />
                 <TextInput
+                  v-if="address.branch_no"
                   class="w-full lg:w-6/12 px-4"
                   msg="สาขาที่/Branch No."
                   name="text"
+                  required="true"
                   v-model="address.branch_no"
                 /><TextInput
                   class="w-full lg:w-12/12 px-4"
                   msg="ADDRESS"
                   name="text"
+                  required="true"
                   v-model="address.address_en"
                 ></TextInput>
 
